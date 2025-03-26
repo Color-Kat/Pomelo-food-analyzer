@@ -2,16 +2,20 @@
 
 ### Installation
 
+
+1. Clone repository
 ```bash
 git clone https://github.com/Color-Kat/Pomelo-food-analyzer.git ./Pomelo-food-analyzer
 ```
 
-**Development mode:**
+2. Copy `.env.example` to `.env` and fill in the necessary environment variables.
+
+3. **Development mode:**
 ```bash
 docker compose up --build
 ```
 
-**Production mode:**
+4. **Production mode:**
 ```bash
 docker compose -f docker-compose.prod.yml up --build
 ```

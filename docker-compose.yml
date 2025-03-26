@@ -5,25 +5,33 @@ services:
       context: .
       dockerfile: ./apps/api-gateway/Dockerfile.dev
     ports:
-      - "3000:3000"
+      - "${API_GATEWAY_PORT}:${API_GATEWAY_PORT}"
     volumes:
       - ./apps/api-gateway:/app/apps/api-gateway
     environment:
       - NODE_ENV=development
-  #    depends_on:
-  #      - db
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - app-network
 
   web:
     build:
       context: ./apps/web
       dockerfile: Dockerfile.dev
     ports:
-      - "8000:8000"
+      - "${WEB_PORT}:${WEB_PORT}"
     volumes:
       - ./apps/web:/app
       - /app/node_modules # Exclude node_modules
     environment:
       - NODE_ENV=development
+    env_file:
+      - .env
+    networks:
+      - app-network
 
   scan:
     container_name: scan
@@ -31,14 +39,17 @@ services:
       context: .
       dockerfile: ./apps/scan/Dockerfile.dev
     ports:
-      - "3001:3001"
+      - "${SCAN_PORT}:${SCAN_PORT}"
     volumes:
       - ./apps/scan:/app/apps/scan
     environment:
       - NODE_ENV=development
-#      - DATABASE_URL=postgres://user:password@db:5432/auth_db
-#    depends_on:
-#      - db
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - app-network
 
   ingredients-recognition:
     container_name: ingredients-recognition
@@ -46,35 +57,31 @@ services:
       context: ./apps/ingredients-recognition
       dockerfile: Dockerfile
     ports:
-      - "3010:3010"
+      - "${INGREDIENTS_RECOGNITION_PORT}:${INGREDIENTS_RECOGNITION_PORT}"
     volumes:
       - ./apps/ingredients-recognition:/app
+    env_file:
+      - .env
+    networks:
+      - app-network
 
-#  users:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    command: npm run start:dev --workspace=users
-#    ports:
-#      - "3002:3002"
-#    volumes:
-#      - ./:/app
-#    environment:
-#      - NODE_ENV=development
-#      - DATABASE_URL=postgres://user:password@db:5432/users_db
-#    depends_on:
-#      - db
-#
-#  db:
-#    image: postgres:16-alpine
-#    environment:
-#      - POSTGRES_USER=user
-#      - POSTGRES_PASSWORD=password
-##      - POSTGRES_MULTIPLE_DATABASES=auth_db,users_db
-#    ports:
-#      - "5432:5432"
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data
+  db:
+    container_name: db
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
