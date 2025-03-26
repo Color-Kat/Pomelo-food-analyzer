@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   api-gateway:
     container_name: api-gateway
