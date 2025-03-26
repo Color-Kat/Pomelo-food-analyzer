@@ -19,13 +19,13 @@
                 "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
             }
         },
-        "scans": {
+        "scan": {
             "type": "application",
-            "root": "apps/scans",
+            "root": "apps/scan",
             "entryFile": "main",
-            "sourceRoot": "apps/scans/src",
+            "sourceRoot": "apps/scan/src",
             "compilerOptions": {
-                "tsConfigPath": "apps/scans/tsconfig.app.json"
+                "tsConfigPath": "apps/scan/tsconfig.app.json"
             }
         }
     }

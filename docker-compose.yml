@@ -15,20 +15,42 @@ services:
   #    depends_on:
   #      - db
 
-  scans:
-    container_name: scans
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules # Exclude node_modules
+    environment:
+      - NODE_ENV=development
+
+  scan:
+    container_name: scan
     build:
       context: .
-      dockerfile: ./apps/scans/Dockerfile.dev
+      dockerfile: ./apps/scan/Dockerfile.dev
     ports:
       - "3001:3001"
     volumes:
-      - ./apps/scans:/app/apps/scans
-#    environment:
-#      - NODE_ENV=development
+      - ./apps/scan:/app/apps/scan
+    environment:
+      - NODE_ENV=development
 #      - DATABASE_URL=postgres://user:password@db:5432/auth_db
 #    depends_on:
 #      - db
+
+  ingredients-recognition:
+    container_name: ingredients-recognition
+    build:
+      context: ./apps/ingredients-recognition
+      dockerfile: Dockerfile
+    ports:
+      - "3010:3010"
+    volumes:
+      - ./apps/ingredients-recognition:/app
 
 #  users:
 #    build:

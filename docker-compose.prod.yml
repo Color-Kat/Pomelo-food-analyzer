@@ -9,23 +9,18 @@ services:
     #    command: npm run start:dev --workspace=api-gateway
     ports:
       - "3000:3000"
-    #    volumes:
-    #      - ./:/app
     environment:
       - NODE_ENV=development
   #    depends_on:
   #      - db
 
-  scans:
-    container_name: scans
+  scan:
+    container_name: scan
     build:
       context: .
-      dockerfile: ./apps/scans/Dockerfile
-    #    command: npm run start:dev --workspace=scans
+      dockerfile: ./apps/scan/Dockerfile
     ports:
       - "3001:3001"
-#    volumes:
-#      - ./:/app
 #    environment:
 #      - NODE_ENV=development
 #      - DATABASE_URL=postgres://user:password@db:5432/auth_db
