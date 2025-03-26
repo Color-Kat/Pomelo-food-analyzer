@@ -13,6 +13,7 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
+    restart: always
     depends_on:
       - db
 
@@ -26,6 +27,7 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
+    restart: always
 
   scan:
     container_name: scan
@@ -38,6 +40,7 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
+    restart: always
     depends_on:
       - db
 
@@ -50,6 +53,7 @@ services:
       - "3010:3010"
     env_file:
       - .env
+    restart: always
 
   db:
     container_name: db
@@ -62,6 +66,7 @@ services:
       - "${DB_PORT}:${DB_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: always
 
 volumes:
   postgres_data:

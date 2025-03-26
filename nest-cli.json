@@ -1,32 +1,41 @@
 {
-    "$schema": "https://json.schemastore.org/nest-cli",
-    "collection": "@nestjs/schematics",
-    "sourceRoot": "apps/api-gateway/src",
-    "compilerOptions": {
-        "deleteOutDir": true,
-        "webpack": true,
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/api-gateway/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/api-gateway",
+  "projects": {
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
         "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
     },
-    "monorepo": true,
-    "root": "apps/api-gateway",
-    "projects": {
-        "api-gateway": {
-            "type": "application",
-            "root": "apps/api-gateway",
-            "entryFile": "main",
-            "sourceRoot": "apps/api-gateway/src",
-            "compilerOptions": {
-                "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
-            }
-        },
-        "scan": {
-            "type": "application",
-            "root": "apps/scan",
-            "entryFile": "main",
-            "sourceRoot": "apps/scan/src",
-            "compilerOptions": {
-                "tsConfigPath": "apps/scan/tsconfig.app.json"
-            }
-        }
+    "contracts": {
+      "type": "library",
+      "root": "libs/contracts",
+      "entryFile": "index",
+      "sourceRoot": "libs/contracts/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/contracts/tsconfig.lib.json"
+      }
+    },
+    "scan": {
+      "type": "application",
+      "root": "apps/scan",
+      "entryFile": "main",
+      "sourceRoot": "apps/scan/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/scan/tsconfig.app.json"
+      }
     }
+  }
 }
