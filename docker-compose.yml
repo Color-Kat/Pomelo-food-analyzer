@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: .
+      dockerfile: ./apps/api-gateway/Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/api-gateway:/app/apps/api-gateway
+    environment:
+      - NODE_ENV=development
+  #    depends_on:
+  #      - db
+
+  scans:
+    container_name: scans
+    build:
+      context: .
+      dockerfile: ./apps/scans/Dockerfile.dev
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./apps/scans:/app/apps/scans
+#    environment:
+#      - NODE_ENV=development
+#      - DATABASE_URL=postgres://user:password@db:5432/auth_db
+#    depends_on:
+#      - db
+
+#  users:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    command: npm run start:dev --workspace=users
+#    ports:
+#      - "3002:3002"
+#    volumes:
+#      - ./:/app
+#    environment:
+#      - NODE_ENV=development
+#      - DATABASE_URL=postgres://user:password@db:5432/users_db
+#    depends_on:
+#      - db
+#
+#  db:
+#    image: postgres:16-alpine
+#    environment:
+#      - POSTGRES_USER=user
+#      - POSTGRES_PASSWORD=password
+##      - POSTGRES_MULTIPLE_DATABASES=auth_db,users_db
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -1,0 +1,12 @@
+FROM node:23-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+# Run in development mode
+CMD ["npm", "run", "start:dev", "api-gateway"]
