@@ -1,14 +1,21 @@
-import { Module } from '@nestjs/common';
-import { ApiGatewayController } from './api-gateway.controller';
-import { ApiGatewayService } from './api-gateway.service';
-import {KafkaClientsModule} from "@app/kafka";
+import {Module} from '@nestjs/common';
 import {ClientsModule, Transport} from "@nestjs/microservices";
 
 @Module({
     imports: [
-        // KafkaClientsModule,
         ClientsModule.register([
-
+            {
+                name: 'API_GATEWAY_SERVICE',
+                transport: Transport.KAFKA,
+                options: {
+                    client: {
+                        brokers: ['kafka:9092'],
+                    },
+                    consumer: {
+                        groupId: 'api-gateway-group',
+                    },
+                },
+            },
             {
                 name: 'SCAN_SERVICE',
                 transport: Transport.KAFKA,
@@ -23,7 +30,6 @@ import {ClientsModule, Transport} from "@nestjs/microservices";
             },
         ]),
     ],
-    controllers: [ApiGatewayController],
-    providers: [ApiGatewayService],
+    exports: [ClientsModule],
 })
-export class ApiGatewayModule {}
+export class KafkaClientsModule {}
