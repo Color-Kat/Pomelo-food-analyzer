@@ -6,22 +6,7 @@ import {ClientsModule, Transport} from "@nestjs/microservices";
 
 @Module({
     imports: [
-        // KafkaClientsModule,
-        ClientsModule.register([
-
-            {
-                name: 'SCAN_SERVICE',
-                transport: Transport.KAFKA,
-                options: {
-                    client: {
-                        brokers: ['kafka:9092'],
-                    },
-                    consumer: {
-                        groupId: 'scan-group',
-                    },
-                },
-            },
-        ]),
+        KafkaClientsModule,
     ],
     controllers: [ApiGatewayController],
     providers: [ApiGatewayService],

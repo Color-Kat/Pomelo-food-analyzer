@@ -21,6 +21,11 @@ export class ApiGatewayController implements OnModuleInit{
         console.log('RESPONSE!!!!!');
     }
 
+    @MessagePattern('test.request')
+    async test() {
+        console.log('request from scan processed!!!!!');
+    }
+
     @Get('ping')
     async pingMicroservices() {
         // const services = ['account', 'scan', 'ingredients-recognition', 'product-analyzer'];

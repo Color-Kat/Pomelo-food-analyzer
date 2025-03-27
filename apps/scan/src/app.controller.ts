@@ -24,6 +24,7 @@ export class AppController implements OnModuleInit{
         console.log('WORK!!!!!!');
         // if (data.service === 'scan') {
         this.apiGatewayClient.emit('ping.response', { pingId: data.pingId, service: 'scan', status: 'ok' });
+        this.apiGatewayClient.emit('test.request', { test: 123 });
         // }
     }
 }
