@@ -20,6 +20,8 @@ docker compose up --build
 docker compose -f docker-compose.prod.yml up --build
 ```
 
+5. Wait until message `Application is running on: http://localhost:3000` appears in the console.
+
 ### Troubleshooting
 For development mode you should disable docker WSL2 in Docker desktop settings
 (**Use the WSL 2 based engine**)

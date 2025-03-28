@@ -49,23 +49,23 @@ services:
       - db
       - kafka
 
-  product-analyzer:
-    container_name: product-analyzer
-    build:
-      context: .
-      dockerfile: ./apps/product-analyzer/Dockerfile.dev
-    ports:
-      - "${PRODUCT_ANALYZER_PORT}:${PRODUCT_ANALYZER_PORT}"
-    volumes:
-      - ./apps/product-analyzer:/app/apps/product-analyzer
-      - ./libs:/app/libs
-    environment:
-      - NODE_ENV=development
-    env_file:
-      - .env
-    depends_on:
-      - db
-      - kafka
+#  product-analyzer:
+#    container_name: product-analyzer
+#    build:
+#      context: .
+#      dockerfile: ./apps/product-analyzer/Dockerfile.dev
+#    ports:
+#      - "${PRODUCT_ANALYZER_PORT}:${PRODUCT_ANALYZER_PORT}"
+#    volumes:
+#      - ./apps/product-analyzer:/app/apps/product-analyzer
+#      - ./libs:/app/libs
+#    environment:
+#      - NODE_ENV=development
+#    env_file:
+#      - .env
+#    depends_on:
+#      - db
+#      - kafka
 
   ingredients-recognition:
     container_name: ingredients-recognition
@@ -100,6 +100,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 22181
     ports:
       - "22181:22181"
+    attach: false
 
   kafka:
     image: confluentinc/cp-kafka:7.8.0
@@ -116,18 +117,21 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+      KAFKA_LOG4J_ROOT_LOGLEVEL: "OFF"  # Оставляем только ошибки
+      KAFKA_LOG4J_APPENDER_STDOUT: "OFF"
     volumes:
       - kafka-data:/var/lib/kafka/data
+    attach: false
 
-  kafka-ui:
-    container_name: kafka-ui
-    image: provectuslabs/kafka-ui:latest
-    ports:
-      - "9000:8080"
-    environment:
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:22181
+#  kafka-ui:
+#    container_name: kafka-ui
+#    image: provectuslabs/kafka-ui:latest
+#    ports:
+#      - "9000:8080"
+#    environment:
+#      KAFKA_CLUSTERS_0_NAME: local
+#      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+#      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:22181
 
 volumes:
   postgres_data:

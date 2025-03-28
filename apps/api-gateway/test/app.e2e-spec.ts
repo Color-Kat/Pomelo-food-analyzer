@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { ApiGatewayModule } from './../src/api-gateway.module';
+import { AppModule } from '../src/app.module';
 
 describe('ApiGatewayController (e2e)', () => {
     let app: INestApplication;
 
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
-            imports: [ApiGatewayModule],
+            imports: [AppModule],
         }).compile();
 
         app = moduleFixture.createNestApplication();

@@ -1,10 +1,10 @@
 import {NestFactory} from "@nestjs/core";
-import {ApiGatewayModule} from "./api-gateway.module";
+import {AppModule} from "./app.module";
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
 import {kafkaConsumers} from "@app/kafka/kafka-consumers";
 
 async function bootstrap() {
-    const app = await NestFactory.create(ApiGatewayModule);
+    const app = await NestFactory.create(AppModule);
     const port = process.env.port ?? 3000;
 
     // Connect Kafka
