@@ -100,7 +100,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 22181
     ports:
       - "22181:22181"
-    attach: false
+    attach: false # don't show logs
 
   kafka:
     image: confluentinc/cp-kafka:7.8.0
@@ -121,7 +121,7 @@ services:
       KAFKA_LOG4J_APPENDER_STDOUT: "OFF"
     volumes:
       - kafka-data:/var/lib/kafka/data
-    attach: false
+    attach: false # don't show logs
 
 #  kafka-ui:
 #    container_name: kafka-ui

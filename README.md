@@ -22,6 +22,8 @@ docker compose -f docker-compose.prod.yml up --build
 
 5. Wait until message `Application is running on: http://localhost:3000` appears in the console.
 
+6. Ping all microservices through kafka: open in browser [http://localhost:3000/ping](http://localhost:3000/ping)
+
 ### Troubleshooting
 For development mode you should disable docker WSL2 in Docker desktop settings
 (**Use the WSL 2 based engine**)
