@@ -20,7 +20,6 @@ export class KafkaModule {
                 consumer: {
                     groupId: `${serviceName}-consumer`,
                 },
-                // producerOnlyMode: true,
             },
         };
 
