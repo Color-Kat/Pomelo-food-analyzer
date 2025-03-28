@@ -37,6 +37,15 @@
         "tsConfigPath": "libs/kafka/tsconfig.lib.json"
       }
     },
+    "product-analyzer": {
+      "type": "application",
+      "root": "apps/product-analyzer",
+      "entryFile": "main",
+      "sourceRoot": "apps/product-analyzer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/product-analyzer/tsconfig.app.json"
+      }
+    },
     "scan": {
       "type": "application",
       "root": "apps/scan",

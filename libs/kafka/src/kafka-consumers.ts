@@ -3,6 +3,7 @@ import {MicroserviceOptions, Transport} from "@nestjs/microservices";
 interface KafkaConsumers {
     apiGatewayService: MicroserviceOptions;
     scanService: MicroserviceOptions;
+    productAnalyzerService: MicroserviceOptions;
 }
 
 export const kafkaConsumers: KafkaConsumers = {
@@ -25,6 +26,17 @@ export const kafkaConsumers: KafkaConsumers = {
             },
             consumer: {
                 groupId: 'scan-consumer',
+            },
+        },
+    },
+    productAnalyzerService: {
+        transport: Transport.KAFKA,
+        options: {
+            client: {
+                brokers: ['kafka:9092'],
+            },
+            consumer: {
+                groupId: 'product-analyzer-consumer',
             },
         },
     }

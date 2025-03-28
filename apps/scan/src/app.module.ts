@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {KafkaProducersModule} from "@app/kafka";
+import {KafkaModule} from "@app/kafka";
 import {ClientsModule, Transport} from "@nestjs/microservices";
 
 @Module({
     imports: [
-        KafkaProducersModule.register('scan-producer'),
+        KafkaModule.register('scan'),
         // ClientsModule.register([
         //     {
         //         name: 'API_GATEWAY_SERVICE',

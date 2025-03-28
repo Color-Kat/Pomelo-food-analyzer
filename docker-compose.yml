@@ -49,6 +49,24 @@ services:
       - db
       - kafka
 
+  product-analyzer:
+    container_name: product-analyzer
+    build:
+      context: .
+      dockerfile: ./apps/product-analyzer/Dockerfile.dev
+    ports:
+      - "${PRODUCT_ANALYZER_PORT}:${PRODUCT_ANALYZER_PORT}"
+    volumes:
+      - ./apps/product-analyzer:/app/apps/product-analyzer
+      - ./libs:/app/libs
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - kafka
+
   ingredients-recognition:
     container_name: ingredients-recognition
     build:
