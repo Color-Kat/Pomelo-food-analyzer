@@ -2,9 +2,14 @@ import {Controller, Get, Inject, Injectable, OnModuleInit} from '@nestjs/common'
 import {ClientKafka, EventPattern, MessagePattern, Payload} from "@nestjs/microservices";
 import {catchError, firstValueFrom, timeout} from "rxjs";
 
+interface PingRequest {
+    serviceName: string;
+    startTime: number;
+}
+
 @Controller()
 export class KafkaController implements OnModuleInit{
-    private readonly services = ['api-gateway', 'scan', 'product-analyzer'];
+    private readonly services = ['api-gateway', 'scan', 'product-analyzer', 'ingredients-recognition'];
 
     constructor(
         @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
@@ -43,17 +48,7 @@ export class KafkaController implements OnModuleInit{
         return responses;
     }
 
-    @MessagePattern('scan.ping.request')
-    async handlePing(@Payload() data: { serviceName: string, startTime: number }) {
-        return {
-            status: 'ok',
-            service: data.serviceName,
-            requestTime: Date.now() - data.startTime + 'ms'
-        };
-    }
-
-    @MessagePattern('product-analyzer.ping.request')
-    async handlePing2(@Payload() data: { serviceName: string, startTime: number }) {
+    async handlePing(data: PingRequest) {
         return {
             status: 'ok',
             service: data.serviceName,
@@ -62,11 +57,22 @@ export class KafkaController implements OnModuleInit{
     }
 
     @MessagePattern('api-gateway.ping.request')
-    async handlePing3(@Payload() data: { serviceName: string, startTime: number }) {
-        return {
-            status: 'ok',
-            service: data.serviceName,
-            requestTime: Date.now() - data.startTime + 'ms'
-        };
+    handleApiGatewayPing(@Payload() data: PingRequest) {
+        return this.handlePing(data);
+    }
+
+    @MessagePattern('scan.ping.request')
+    handleScanPing(@Payload() data: PingRequest) {
+        return this.handlePing(data);
+    }
+
+    @MessagePattern('product-analyzer.ping.request')
+    handleProductAnalyzerPing(@Payload() data: PingRequest) {
+        return this.handlePing(data);
+    }
+
+    @MessagePattern('ingredients-recognition.ping.request')
+    handleIngredientsRecognitionPing(@Payload() data: PingRequest) {
+        return this.handlePing(data);
     }
 }
