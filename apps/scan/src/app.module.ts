@@ -6,7 +6,7 @@ import {ClientsModule, Transport} from "@nestjs/microservices";
 
 @Module({
     imports: [
-        KafkaProducersModule
+        KafkaProducersModule.register('scan-producer'),
         // ClientsModule.register([
         //     {
         //         name: 'API_GATEWAY_SERVICE',

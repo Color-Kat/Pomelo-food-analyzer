@@ -1,26 +1,31 @@
-import {Transport} from "@nestjs/microservices";
+import {MicroserviceOptions, Transport} from "@nestjs/microservices";
 
-export const kafkaConsumers = {
+interface KafkaConsumers {
+    apiGatewayService: MicroserviceOptions;
+    scanService: MicroserviceOptions;
+}
+
+export const kafkaConsumers: KafkaConsumers = {
     apiGatewayService: {
-        name: 'API_GATEWAY_SERVICE',
         transport: Transport.KAFKA,
         options: {
             client: {
-                clientId: 'scan-producer',
                 brokers: ['kafka:9092'],
             },
-            producerOnlyMode: true,
-        }
+            consumer: {
+                groupId: 'api-gateway-consumer',
+            },
+        },
     },
     scanService: {
-        name: 'SCAN_SERVICE',
         transport: Transport.KAFKA,
         options: {
             client: {
-                clientId: 'api-gateway-producer',
                 brokers: ['kafka:9092'],
             },
-            producerOnlyMode: true,
+            consumer: {
+                groupId: 'scan-consumer',
+            },
         },
     }
 };

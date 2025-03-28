@@ -6,7 +6,7 @@ import {ClientKafka, MessagePattern, Payload} from "@nestjs/microservices";
 export class AppController implements OnModuleInit{
     constructor(
         private readonly appService: AppService,
-        @Inject('API_GATEWAY_SERVICE') private readonly apiGatewayClient: ClientKafka,
+        @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
     ) {}
 
     @Get()
@@ -15,16 +15,13 @@ export class AppController implements OnModuleInit{
     }
 
     async onModuleInit() {
-        this.apiGatewayClient.subscribeToResponseOf('ping.request');
-        await this.apiGatewayClient.connect();
+        this.kafkaService.subscribeToResponseOf('scan.ping.request');
+        await this.kafkaService.connect();
     }
 
-    @MessagePattern('ping.request')
+    @MessagePattern('scan.ping.request')
     async handlePing(@Payload() data: { pingId: string; service: string }) {
         console.log('WORK!!!!');
-        // if (data.service === 'scan') {
-        this.apiGatewayClient.emit('ping.response', { pingId: data.pingId, service: 'scan', status: 'ok' });
-        this.apiGatewayClient.emit('test.request', { test: 123 });
-        // }
+        return { status: 'ok', service: 'scan', timestamp: Date.now() };
     }
 }

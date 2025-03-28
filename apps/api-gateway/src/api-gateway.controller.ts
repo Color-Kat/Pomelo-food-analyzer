@@ -1,19 +1,20 @@
 import {Controller, Get, Inject, OnModuleInit} from '@nestjs/common';
 import {ApiGatewayService} from './api-gateway.service';
 import {ClientKafka, MessagePattern} from "@nestjs/microservices";
-import {firstValueFrom} from "rxjs";
+import {catchError, firstValueFrom, timeout} from "rxjs";
 
 @Controller()
 export class ApiGatewayController implements OnModuleInit{
     constructor(
         private readonly apiGatewayService: ApiGatewayService,
-        @Inject('SCAN_SERVICE') private readonly scanService: ClientKafka,
+        @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
     ) {
     }
 
     async onModuleInit() {
-        this.scanService.subscribeToResponseOf('ping.response');
-        await this.scanService.connect();
+        this.kafkaService.subscribeToResponseOf('ping.response');
+        this.kafkaService.subscribeToResponseOf('scan.ping.request');
+        await this.kafkaService.connect();
     }
 
     @MessagePattern('ping.response')
@@ -21,33 +22,30 @@ export class ApiGatewayController implements OnModuleInit{
         console.log('RESPONSE!!!!!');
     }
 
-    @MessagePattern('test.request')
-    async test() {
-        console.log('request from scan processed!!!!!');
-    }
-
     @Get('ping')
-    async pingMicroservices() {
-        // const services = ['account', 'scan', 'ingredients-recognition', 'product-analyzer'];
-        const services = ['scan'];
-        const pingId = Date.now().toString();
+    async pingMicroservices(): Promise<any> {
+        const services = ['scan', 'api-gateway'];
         const responses = {};
 
-        // Emit ping to all services
-        // services.forEach(service =>
-        this.scanService.emit('ping.request', { pingId, service: 'scan' })
-        // );
+        console.log('ping microservices...');
+        this.kafkaService.send(`scan.ping.request`, {ping: "test"})
 
-        // Collect responses with a timeout
-        const timeout = 5000; // 5 seconds
-        await new Promise(resolve => setTimeout(resolve, timeout));
+        const pingPromises = services.map((service) => {
+            return firstValueFrom(
+                this.kafkaService
+                    .send(`${service}.ping.request`, {})
+                    .pipe(
+                        timeout(5000), // Тайм-аут 3 секунды на каждый ответ
+                        catchError(() => ['timeout 5s']) // Возвращаем 'timeout' при отсутствии ответа
+                    )
+            ).then((response) => {
+                responses[service] = response;
+            });
+        });
 
-        for (const service of services) {
-            const response = await firstValueFrom(
-                this.scanService.send('ping.response', { pingId, service })
-            ).catch(() => ({ status: 'timeout' }));
-            responses[service] = response?.status || 'timeout';
-        }
+        await Promise.all(pingPromises);
+
+        console.log('ping microservices done');
 
         return responses;
     }

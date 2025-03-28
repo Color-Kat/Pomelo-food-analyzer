@@ -1,6 +1,7 @@
 import {NestFactory} from "@nestjs/core";
 import {ApiGatewayModule} from "./api-gateway.module";
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
+import {kafkaConsumers} from "@app/kafka/kafka-consumers";
 
 async function bootstrap() {
     const app = await NestFactory.create(ApiGatewayModule);
@@ -8,17 +9,7 @@ async function bootstrap() {
 
     // Connect Kafka
     app.enableShutdownHooks(); // For correct disconnect from kafka
-    app.connectMicroservice<MicroserviceOptions>({
-        transport: Transport.KAFKA,
-        options: {
-            client: {
-                brokers: ['kafka:9092'],
-            },
-            consumer: {
-                groupId: 'api-gateway-consumer',
-            },
-        },
-    });
+    app.connectMicroservice<MicroserviceOptions>(kafkaConsumers.apiGatewayService);
 
     await app.startAllMicroservices();
     await app.listen(port);

@@ -6,7 +6,7 @@ import {ClientsModule, Transport} from "@nestjs/microservices";
 
 @Module({
     imports: [
-        KafkaProducersModule,
+        KafkaProducersModule.register('api-gateway-producer'),
     ],
     controllers: [ApiGatewayController],
     providers: [ApiGatewayService],
