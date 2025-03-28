@@ -5,6 +5,17 @@ import {ClientsModule, Transport} from "@nestjs/microservices";
     imports: [
         ClientsModule.register([
             {
+                name: 'KAFKA_SERVICE',
+                transport: Transport.KAFKA,
+                options: {
+                    client: {
+                        clientId: 'kafka-producer',
+                        brokers: ['kafka:9092'],
+                    },
+                    producerOnlyMode: true,
+                },
+            },
+            {
                 name: 'SCAN_SERVICE',
                 transport: Transport.KAFKA,
                 options: {
@@ -26,33 +37,8 @@ import {ClientsModule, Transport} from "@nestjs/microservices";
                     producerOnlyMode: true,
                 },
             },
-
-            // {
-            //     name: 'API_GATEWAY_SERVICE',
-            //     transport: Transport.KAFKA,
-            //     options: {
-            //         client: {
-            //             brokers: ['kafka:9092'],
-            //         },
-            //         consumer: {
-            //             groupId: 'api-gateway-group',
-            //         },
-            //     },
-            // },
-            // {
-            //     name: 'SCAN_SERVICE',
-            //     transport: Transport.KAFKA,
-            //     options: {
-            //         client: {
-            //             brokers: ['kafka:9092'],
-            //         },
-            //         consumer: {
-            //             groupId: 'scan-group',
-            //         },
-            //     },
-            // },
         ]),
     ],
     exports: [ClientsModule],
 })
-export class KafkaClientsModule {}
+export class KafkaProducersModule {}

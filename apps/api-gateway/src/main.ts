@@ -7,6 +7,7 @@ async function bootstrap() {
     const port = process.env.port ?? 3000;
 
     // Connect Kafka
+    app.enableShutdownHooks(); // For correct disconnect from kafka
     app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.KAFKA,
         options: {

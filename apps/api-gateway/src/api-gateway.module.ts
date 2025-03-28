@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ApiGatewayController } from './api-gateway.controller';
 import { ApiGatewayService } from './api-gateway.service';
-import {KafkaClientsModule} from "@app/kafka";
+import {KafkaProducersModule} from "@app/kafka";
 import {ClientsModule, Transport} from "@nestjs/microservices";
 
 @Module({
     imports: [
-        KafkaClientsModule,
+        KafkaProducersModule,
     ],
     controllers: [ApiGatewayController],
     providers: [ApiGatewayService],

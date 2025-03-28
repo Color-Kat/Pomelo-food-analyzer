@@ -1,1 +1,1 @@
-export * from './kafka-clients.module';
+export * from './kafka-producers.module';

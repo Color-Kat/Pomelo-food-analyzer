@@ -15,6 +15,7 @@ services:
       - .env
     depends_on:
       - db
+      - kafka
 
 #  web:
 #    build:
@@ -46,6 +47,7 @@ services:
       - .env
     depends_on:
       - db
+      - kafka
 
   ingredients-recognition:
     container_name: ingredients-recognition
@@ -87,6 +89,7 @@ services:
       - zookeeper
     ports:
       - "9092:9092"
+      - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:22181

@@ -21,7 +21,7 @@ export class AppController implements OnModuleInit{
 
     @MessagePattern('ping.request')
     async handlePing(@Payload() data: { pingId: string; service: string }) {
-        console.log('WORK!!!!!!');
+        console.log('WORK!!!!');
         // if (data.service === 'scan') {
         this.apiGatewayClient.emit('ping.response', { pingId: data.pingId, service: 'scan', status: 'ok' });
         this.apiGatewayClient.emit('test.request', { test: 123 });
