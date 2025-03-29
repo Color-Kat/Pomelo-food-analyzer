@@ -8,7 +8,8 @@ import {PingContract} from "@app/kafka";
 export class AppController {
     constructor(
         private readonly apiGatewayService: AppService,
-        // @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
+        @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
+        // private readonly kafkaService: ClientKafka,
     ) {
     }
 

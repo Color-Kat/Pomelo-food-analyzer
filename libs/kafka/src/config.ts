@@ -1,0 +1,1 @@
+export const kafkaAddress = process.env.KAFKA_BROKER as string;

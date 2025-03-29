@@ -16,6 +16,7 @@ services:
     restart: always
     depends_on:
       - db
+      - kafka
 
   web:
     build:
@@ -43,6 +44,7 @@ services:
     restart: always
     depends_on:
       - db
+      - kafka
 
   ingredients-recognition:
     container_name: ingredients-recognition
@@ -55,6 +57,8 @@ services:
       - .env
     restart: always
 
+# ===== Additional Services ===== #
+
   db:
     container_name: db
     image: postgres:17.4-alpine
@@ -65,8 +69,25 @@ services:
     ports:
       - "${DB_PORT}:${DB_PORT}"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     restart: always
 
+  kafka:
+    image: apache/kafka-native:4.0.0
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: CONTROLLER://0.0.0.0:9091,HOST://0.0.0.0:9092,DOCKER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: HOST://localhost:9092,DOCKER://kafka:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,DOCKER:PLAINTEXT,HOST:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9091
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+    attach: false # don't show logs
+
 volumes:
-  postgres_data:
+  postgres-data:

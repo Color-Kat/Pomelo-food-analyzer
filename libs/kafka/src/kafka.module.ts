@@ -1,6 +1,7 @@
 import {DynamicModule, Global, Module} from '@nestjs/common';
 import {ClientProviderOptions, ClientsModule, Transport} from "@nestjs/microservices";
 import {KafkaController} from "@app/kafka/kafka.controller";
+import {kafkaAddress} from "@app/kafka/config";
 
 @Global()
 @Module({})
@@ -12,14 +13,15 @@ export class KafkaModule {
             options: {
                 client: {
                     clientId: `${serviceName}-producer`,
-                    brokers: ['kafka:9092'],
+                    brokers: [kafkaAddress],
                 },
-                producer: {
-                    allowAutoTopicCreation: true,
-                },
-                consumer: {
-                    groupId: `${serviceName}-consumer`,
-                },
+                // producer: {
+                //     allowAutoTopicCreation: true,
+                //     // createPartitioner: Partitioners.LegacyPartitioner
+                // },
+                // consumer: {
+                //     groupId: `${serviceName}-consumer`,
+                // },
             },
         };
 
