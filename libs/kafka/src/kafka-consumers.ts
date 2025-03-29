@@ -13,9 +13,16 @@ export const kafkaConsumers: KafkaConsumers = {
         options: {
             client: {
                 brokers: [kafkaAddress],
-                // clientId: `api-gateway-producer`
+                clientId: `api-gateway-client`,
                 // connectionTimeout: 50000,
                 // requestTimeout: 10000,
+                retry: {
+                    initialRetryTime: 100, // Initial retry delay in milliseconds (e.g., 300ms)
+                    retries: 15, // Maximum number of retries
+                    factor: 1, // Exponential backoff factor
+                    maxRetryTime: 100000, // Maximum retry delay in milliseconds (e.g., 5 seconds)
+
+                }
                 // retry: {
                 //     initialRetryTime: 100, // Начальное время ожидания перед повторной попыткой (мс)
                 //     retries: 10,          // Количество повторных попыток
@@ -24,9 +31,12 @@ export const kafkaConsumers: KafkaConsumers = {
             consumer: {
                 groupId: 'api-gateway-consumer',
             },
-            producer: {
-                allowAutoTopicCreation: true,
-            }
+            // producer: {
+            //     allowAutoTopicCreation: true,
+            //     retry: {
+            //         retries: 20
+            //     }
+            // }
         },
     },
     scanService: {
@@ -34,7 +44,7 @@ export const kafkaConsumers: KafkaConsumers = {
         options: {
             client: {
                 brokers: [kafkaAddress],
-                clientId: `scan-producer`
+                clientId: `scan-client`,
 
                 // connectionTimeout: 50000,
                 // requestTimeout: 10000,
@@ -49,6 +59,7 @@ export const kafkaConsumers: KafkaConsumers = {
         options: {
             client: {
                 brokers: [kafkaAddress],
+                clientId: `product-analyzer-client`
             },
             consumer: {
                 groupId: 'product-analyzer-consumer',

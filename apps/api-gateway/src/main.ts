@@ -1,8 +1,7 @@
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
 import {MicroserviceOptions, Transport} from "@nestjs/microservices";
-import {kafkaConsumers} from "@app/kafka/kafka-consumers";
-
+import {kafkaConsumers} from "@app/kafka";
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const port = process.env.port ?? 3000;

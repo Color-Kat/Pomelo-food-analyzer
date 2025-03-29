@@ -15,10 +15,10 @@ export class KafkaModule {
                     clientId: `${serviceName}-producer`,
                     brokers: [kafkaAddress],
                 },
-                // producer: {
-                //     allowAutoTopicCreation: true,
-                //     // createPartitioner: Partitioners.LegacyPartitioner
-                // },
+                producer: {
+                    allowAutoTopicCreation: true,
+                    // createPartitioner: Partitioners.LegacyPartitioner
+                },
                 // consumer: {
                 //     groupId: `${serviceName}-consumer`,
                 // },
