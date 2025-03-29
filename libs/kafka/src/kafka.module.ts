@@ -17,11 +17,16 @@ export class KafkaModule {
                 },
                 producer: {
                     allowAutoTopicCreation: true,
+
                     // createPartitioner: Partitioners.LegacyPartitioner
                 },
-                // consumer: {
-                //     groupId: `${serviceName}-consumer`,
-                // },
+                consumer: {
+                    groupId: `${serviceName}-consumer`,
+                    sessionTimeout: 6000,
+                    rebalanceTimeout: 1000,
+                    heartbeatInterval: 100,
+                    allowAutoTopicCreation: true,
+                },
             },
         };
 

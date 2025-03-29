@@ -14,23 +14,29 @@ export class AppController {
     @MessagePattern('scan' + PingContract.topic)
     async handlePing(data: PingContract.Request) {
         return {
-            status: 'ok',
+            status: 'ok!',
             service: data.serviceName,
             requestTime: Date.now() - data.startTime + 'ms'
         };
     }
 
+    @MessagePattern('scan.add-scan.command')
+    async addNewScan(data: any) {
+        console.log("data received", data);
+
+        return {
+            scan: {
+                id: 'sha256:ovnskdq5dn',
+                type: data.scan.type,
+                ingredients: [],
+            }
+        }
+    }
+
+
+
     @Get()
     getHello(): string {
         return this.appService.getHello();
     }
-
-    // @MessagePattern('scan.ping.request')
-    // async handlePing(@Payload() data: { startTime: number }) {
-    //     return {
-    //         status: 'ok',
-    //         service: 'scan',
-    //         requestTime: Date.now() - data.startTime + 'ms'
-    //     };
-    // }
 }

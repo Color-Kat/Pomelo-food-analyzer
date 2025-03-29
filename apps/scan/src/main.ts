@@ -11,8 +11,8 @@ async function bootstrap() {
     // app.enableShutdownHooks(); // For correct disconnect from kafka
     app.connectMicroservice<MicroserviceOptions>(kafkaConsumers.scanService);
 
-    await app.startAllMicroservices();
     await app.listen(port);
+    await app.startAllMicroservices();
 
     console.log("Application is running on: http://localhost:" + port);
 }

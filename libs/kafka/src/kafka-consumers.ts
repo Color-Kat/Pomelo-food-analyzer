@@ -7,63 +7,34 @@ interface KafkaConsumers {
     productAnalyzerService: MicroserviceOptions;
 }
 
-export const kafkaConsumers: KafkaConsumers = {
-    apiGatewayService: {
-        transport: Transport.KAFKA,
-        options: {
-            client: {
-                brokers: [kafkaAddress],
-                clientId: `api-gateway-client`,
-                // connectionTimeout: 50000,
-                // requestTimeout: 10000,
-                retry: {
-                    initialRetryTime: 100, // Initial retry delay in milliseconds (e.g., 300ms)
-                    retries: 15, // Maximum number of retries
-                    factor: 1, // Exponential backoff factor
-                    maxRetryTime: 100000, // Maximum retry delay in milliseconds (e.g., 5 seconds)
-
-                }
-                // retry: {
-                //     initialRetryTime: 100, // Начальное время ожидания перед повторной попыткой (мс)
-                //     retries: 10,          // Количество повторных попыток
-                // },
-            },
-            consumer: {
-                groupId: 'api-gateway-consumer',
-            },
-            // producer: {
-            //     allowAutoTopicCreation: true,
-            //     retry: {
-            //         retries: 20
-            //     }
+const createKafkaMicroserviceOptions = (serviceName: string): MicroserviceOptions => ({
+    transport: Transport.KAFKA,
+    options: {
+        client: {
+            brokers: [kafkaAddress],
+            clientId: `${serviceName}-client`,
+            // retry: {
+            //     initialRetryTime: 50, // Initial retry delay in milliseconds (e.g., 300ms)
+            //     retries: 10, // Maximum number of retries
+            //     factor: 2, // Exponential backoff factor
+            //     maxRetryTime: 10000, // Maximum retry delay in milliseconds (e.g., 5 seconds)
             // }
         },
+        consumer: {
+            groupId: `${serviceName}-consumer`,
+            sessionTimeout: 6000,
+            rebalanceTimeout: 1000,
+            heartbeatInterval: 500,
+            allowAutoTopicCreation: true,
+        },
+        producer: {
+            allowAutoTopicCreation: true,
+        }
     },
-    scanService: {
-        transport: Transport.KAFKA,
-        options: {
-            client: {
-                brokers: [kafkaAddress],
-                clientId: `scan-client`,
+});
 
-                // connectionTimeout: 50000,
-                // requestTimeout: 10000,
-            },
-            consumer: {
-                groupId: 'scan-consumer',
-            },
-        },
-    },
-    productAnalyzerService: {
-        transport: Transport.KAFKA,
-        options: {
-            client: {
-                brokers: [kafkaAddress],
-                clientId: `product-analyzer-client`
-            },
-            consumer: {
-                groupId: 'product-analyzer-consumer',
-            },
-        },
-    }
+export const kafkaConsumers: KafkaConsumers = {
+    apiGatewayService: createKafkaMicroserviceOptions('api-gateway'),
+    scanService: createKafkaMicroserviceOptions('scan'),
+    productAnalyzerService: createKafkaMicroserviceOptions('product-analyzer')
 };

@@ -1,1 +1,1 @@
-export const kafkaAddress = process.env.KAFKA_BROKER as string;
+export const kafkaAddress = process.env.KAFKA_BROKER as string || 'localhost:9092';
