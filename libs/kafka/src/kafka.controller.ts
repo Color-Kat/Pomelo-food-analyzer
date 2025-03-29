@@ -21,7 +21,7 @@ export class KafkaController implements OnModuleInit {
         this.services.forEach((service) => {
             this.kafkaService.subscribeToResponseOf(service + '.ping.request');
         });
-        // this.kafkaService.connect();
+        this.kafkaService.connect();
     }
 
     @Get('ping')

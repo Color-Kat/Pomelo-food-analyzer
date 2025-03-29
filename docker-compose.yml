@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./apps/api-gateway/Dockerfile.dev
     ports:
-      - "${API_GATEWAY_PORT}:${API_GATEWAY_PORT}"
+      - ${API_GATEWAY_PORT}:${API_GATEWAY_PORT}
     volumes:
       - ./apps/api-gateway:/app/apps/api-gateway
       - ./libs:/app/libs
@@ -17,19 +17,19 @@ services:
       - db
       - kafka
 
-#  web:
-#    build:
-#      context: ./apps/web
-#      dockerfile: Dockerfile.dev
-#    ports:
-#      - "${WEB_PORT}:${WEB_PORT}"
-#    volumes:
-#      - ./apps/web:/app
-#      - /app/node_modules # Exclude node_modules
-#    environment:
-#      - NODE_ENV=development
-#    env_file:
-#      - .env
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile.dev
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules # Exclude node_modules
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
 
   scan:
     container_name: scan
@@ -37,7 +37,7 @@ services:
       context: .
       dockerfile: ./apps/scan/Dockerfile.dev
     ports:
-      - "${SCAN_PORT}:${SCAN_PORT}"
+      - ${SCAN_PORT}:${SCAN_PORT}
     volumes:
       - ./apps/scan:/app/apps/scan
       - ./libs:/app/libs
@@ -73,7 +73,7 @@ services:
       context: ./apps/ingredients-recognition
       dockerfile: Dockerfile
     ports:
-      - "${INGREDIENTS_RECOGNITION_PORT}:${INGREDIENTS_RECOGNITION_PORT}"
+      - ${INGREDIENTS_RECOGNITION_PORT}:${INGREDIENTS_RECOGNITION_PORT}
     volumes:
       - ./apps/ingredients-recognition:/app
     env_file:
@@ -91,7 +91,7 @@ services:
     ports:
       - ${DB_PORT}:5432
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
 
 #  zookeeper:
 #    image: confluentinc/cp-zookeeper:7.4.4
@@ -151,5 +151,5 @@ services:
 #      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:22181
 
 volumes:
-  postgres_data:
-  kafka-data1:
+  postgres-data:
+  kafka-data:

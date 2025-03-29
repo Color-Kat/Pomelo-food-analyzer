@@ -12,7 +12,7 @@ export class ScanController implements OnModuleInit {
     async onModuleInit() {
         // Subscribe to response for .send method
         this.kafkaService.subscribeToResponseOf('scan.add-scan.command');
-        // this.kafkaService.connect();
+        this.kafkaService.connect();
     }
 
     @Get()
