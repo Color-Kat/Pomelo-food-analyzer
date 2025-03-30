@@ -3,10 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {KafkaModule} from "@app/kafka";
 import { ScanModule } from './scan/scan.module';
+import {ConfigModule} from "@app/config";
 
 @Module({
     imports: [
         KafkaModule.register('api-gateway'),
+        ConfigModule,
         ScanModule,
     ],
     controllers: [AppController],
