@@ -1,12 +1,8 @@
 import {IsEnum} from 'class-validator';
-
-export enum ScanType {
-    FOOD = 'food',
-    COSMETIC = 'cosmetic',
-}
+import {ScanType} from "@app/interfaces";
 
 export namespace ScanAddScan {
-    export const topic = "scan.add-scan.command";
+    // export const topic = "scan.add-scan.command";
 
     export class Request {
         @IsEnum(ScanType)

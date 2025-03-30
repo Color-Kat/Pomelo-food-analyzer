@@ -30,6 +30,12 @@
       "@app/contracts/*": [
         "libs/contracts/src/*"
       ],
+      "@app/interfaces": [
+        "libs/interfaces/src"
+      ],
+      "@app/interfaces/*": [
+        "libs/interfaces/src/*"
+      ],
       "@app/kafka": [
         "libs/kafka/src"
       ],

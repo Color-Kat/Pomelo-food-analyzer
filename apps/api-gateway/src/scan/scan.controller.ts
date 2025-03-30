@@ -1,11 +1,18 @@
 import {Controller, Get, Inject, OnModuleInit} from '@nestjs/common';
-import {ClientKafka, MessagePattern} from "@nestjs/microservices";
-import {catchError, firstValueFrom, timeout} from "rxjs";
+import {ClientKafka} from "@nestjs/microservices";
+import {firstValueFrom} from "rxjs";
+import {ConfigService} from "@nestjs/config";
+import {HttpService} from "@nestjs/axios";
+import {microserviceUrls} from "@app/config";
+import {ScanAddScan} from "@app/contracts";
+import {ScanType} from "@app/interfaces";
 
 @Controller('scan')
 export class ScanController implements OnModuleInit {
     constructor(
-        @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka
+        @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
+        private readonly configService: ConfigService,
+        private readonly httpService: HttpService
     ) {
     }
 
@@ -15,23 +22,22 @@ export class ScanController implements OnModuleInit {
         this.kafkaService.connect();
     }
 
+    // Switch to POST
+    // async addNewScan(@Body() body: { type: string }) {
     @Get()
     async addNewScan() {
-        const result = await firstValueFrom(
-            this.kafkaService.send(
-                'scan.add-scan.command',
-                {
-                    scan: {
-                        type: 'food'
-                    }
-                }
-            ));
+        const body = {
+            type: ScanType.FOOD
+        };
 
-        console.log('New scan created successfully:', result);
-    }
+        // redirect request to scan service
+        const response = await firstValueFrom(
+            this.httpService.post<ScanAddScan.Response, ScanAddScan.Request>(
+                microserviceUrls.scan + "/scan",
+                body
+            )
+        );
 
-    @MessagePattern('scan.scan-processed')
-    async scanProcessed(data: any) {
-        console.log('scan processed:', data)
+        return response.data;
     }
 }

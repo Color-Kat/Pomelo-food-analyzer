@@ -17,19 +17,19 @@ services:
       - db
       - kafka
 
-  web:
-    build:
-      context: ./apps/web
-      dockerfile: Dockerfile.dev
-    ports:
-      - ${WEB_PORT}:${WEB_PORT}
-    volumes:
-      - ./apps/web:/app
-      - /app/node_modules # Exclude node_modules
-    environment:
-      - NODE_ENV=development
-    env_file:
-      - .env
+  #    build:
+  #      context: ./apps/web
+  #      dockerfile: Dockerfile.dev
+  #    ports:
+  #      - ${WEB_PORT}:${WEB_PORT}
+  #    volumes:
+  #      - ./apps/web:/app
+  #      - /app/node_modules # Exclude node_modules
+  #    environment:
+  #      - NODE_ENV=development
+  #    env_file:
+  #      - .env
+#  web:
 
   scan:
     container_name: scan

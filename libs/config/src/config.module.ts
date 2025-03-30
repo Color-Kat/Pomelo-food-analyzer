@@ -14,13 +14,18 @@ import * as Joi from 'joi';
                 DB_HOST: Joi.string().required(),
                 DB_PORT: Joi.number().port().required(),
 
-                // Ports for microservices
-                API_GATEWAY_PORT: Joi.number().port().default(3000),
-                WEB_PORT: Joi.number().port().default(8000),
-                ACCOUNT_PORT: Joi.number().port().default(3001),
-                SCAN_PORT: Joi.number().port().default(3002),
-                PRODUCT_ANALYZER_PORT: Joi.number().port().default(3003),
-                INGREDIENTS_RECOGNITION_PORT: Joi.number().port().default(3010),
+                // Ports and URLs of all microservices
+                WEB_PORT: Joi.number().port().required(),
+                API_GATEWAY_HOST: Joi.string().uri().required(),
+                API_GATEWAY_PORT: Joi.number().port().required(),
+                ACCOUNT_HOST: Joi.string().uri().required(),
+                ACCOUNT_PORT: Joi.number().port().required(),
+                SCAN_HOST: Joi.string().uri().required(),
+                SCAN_PORT: Joi.number().port().required(),
+                PRODUCT_ANALYZER_HOST: Joi.string().uri().required(),
+                PRODUCT_ANALYZER_PORT: Joi.number().port().required(),
+                INGREDIENTS_RECOGNITION_HOST: Joi.string().uri().required(),
+                INGREDIENTS_RECOGNITION_PORT: Joi.number().port().required(),
 
                 // Kafka
                 KAFKA_BROKER: Joi.string().required(),
