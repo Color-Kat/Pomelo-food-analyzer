@@ -13,12 +13,12 @@ const createKafkaMicroserviceOptions = (serviceName: string): MicroserviceOption
         client: {
             brokers: [kafkaAddress],
             clientId: `${serviceName}-client`,
-            // retry: {
-            //     initialRetryTime: 50, // Initial retry delay in milliseconds (e.g., 300ms)
-            //     retries: 10, // Maximum number of retries
-            //     factor: 2, // Exponential backoff factor
-            //     maxRetryTime: 10000, // Maximum retry delay in milliseconds (e.g., 5 seconds)
-            // }
+            retry: {
+                initialRetryTime: 1000, // Initial retry delay in milliseconds (e.g., 300ms)
+                // retries: 10,         // Maximum number of retries
+                // factor: 2,           // Exponential backoff factor
+                maxRetryTime: 30000,    // Maximum retry delay in milliseconds (e.g., 5 seconds)
+            }
         },
         consumer: {
             groupId: `${serviceName}-consumer`,
@@ -26,9 +26,15 @@ const createKafkaMicroserviceOptions = (serviceName: string): MicroserviceOption
             rebalanceTimeout: 1000,
             heartbeatInterval: 500,
             allowAutoTopicCreation: true,
+            // retry: {
+            //     maxRetryTime: 30000,
+            // }
         },
         producer: {
             allowAutoTopicCreation: true,
+            // retry: {
+            //     maxRetryTime: 30000,
+            // }
         }
     },
 });
