@@ -1,10 +1,10 @@
 import {Controller, Get, Inject, OnModuleInit} from '@nestjs/common';
 import {ClientKafka} from "@nestjs/microservices";
-import {firstValueFrom} from "rxjs";
+import {catchError, firstValueFrom} from "rxjs";
 import {ConfigService} from "@nestjs/config";
 import {HttpService} from "@nestjs/axios";
 import {microserviceUrls} from "@app/config";
-import {ScanAddScan} from "@app/contracts";
+import {ScanCreate} from "@app/contracts";
 import {ScanType} from "@app/interfaces";
 
 @Controller('scan')
@@ -27,12 +27,13 @@ export class ScanController implements OnModuleInit {
     @Get()
     async addNewScan() {
         const body = {
-            type: ScanType.FOOD
+            type: ScanType.FOOD+'asdf'
         };
 
         // redirect request to scan service
+        // TODO handle errors
         const response = await firstValueFrom(
-            this.httpService.post<ScanAddScan.Response, ScanAddScan.Request>(
+            this.httpService.post<ScanCreate.Response, any>(
                 microserviceUrls.scan + "/scan",
                 body
             )

@@ -1,1 +1,1 @@
-export * from './scan/scan.add-scan';
+export * from './scan/scan.create';
