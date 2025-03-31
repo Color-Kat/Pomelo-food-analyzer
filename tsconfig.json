@@ -18,6 +18,15 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      // Apps
+      "@scan/*": [
+        "apps/scan/src/*"
+      ],
+      "@api-gateway/*": [
+        "apps/api-gateway/src/*"
+      ],
+
+      // Libs
       "@app/config": [
         "libs/config/src"
       ],

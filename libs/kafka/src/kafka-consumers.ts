@@ -1,5 +1,5 @@
-import {MicroserviceOptions, Transport} from "@nestjs/microservices";
 import {kafkaAddress} from "@app/kafka/config";
+import {MicroserviceOptions, Transport} from "@nestjs/microservices";
 
 interface KafkaConsumers {
     apiGatewayService: MicroserviceOptions;
@@ -14,10 +14,10 @@ const createKafkaMicroserviceOptions = (serviceName: string): MicroserviceOption
             brokers: [kafkaAddress],
             clientId: `${serviceName}-client`,
             retry: {
-                initialRetryTime: 1000, // Initial retry delay in milliseconds (e.g., 300ms)
+                initialRetryTime: 1500, // Initial retry delay in milliseconds (e.g., 300ms)
                 // retries: 10,         // Maximum number of retries
                 // factor: 2,           // Exponential backoff factor
-                maxRetryTime: 30000,    // Maximum retry delay in milliseconds (e.g., 5 seconds)
+                maxRetryTime: 35000,    // Maximum retry delay in milliseconds (e.g., 5 seconds)
             }
         },
         consumer: {

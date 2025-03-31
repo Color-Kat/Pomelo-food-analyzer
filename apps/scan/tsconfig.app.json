@@ -1,9 +1,16 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "declaration": false,
-        "outDir": "../../dist/apps/scan"
-    },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "../../dist/apps/scan",
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test",
+    "**/*spec.ts"
+  ]
 }

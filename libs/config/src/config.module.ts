@@ -10,9 +10,10 @@ import * as Joi from 'joi';
                 // Postgresql settings
                 DB_USER: Joi.string().required(),
                 DB_PASSWORD: Joi.string().required(),
-                DB_NAME: Joi.string().required(),
                 DB_HOST: Joi.string().required(),
-                DB_PORT: Joi.number().port().required(),
+                SCAN_DB_NAME: Joi.string().required(),
+                PRODUCT_ANALYZER_DB_NAME: Joi.string().required(),
+                ACCOUNT_DB_NAME: Joi.string().required(),
 
                 // Ports and URLs of all microservices
                 WEB_PORT: Joi.number().port().required(),

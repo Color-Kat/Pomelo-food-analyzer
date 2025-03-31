@@ -22,30 +22,30 @@ export class ScanController implements OnModuleInit {
         this.kafkaService.connect();
     }
 
-    // Switch to POST
-    // async addNewScan(@Body() body: { type: string }) {
     @Get()
+    async getAllScans() {
+        // Redirect request to scan service
+        const response = await firstValueFrom(
+            this.httpService.get(microserviceUrls.scan + "/scan")
+        );
+
+        return response.data;
+    }
+
+    // TODO: Switch to POST
+    // async addNewScan(@Body() body: { type: string }) {
+    @Get('/add')
     async addNewScan() {
         const body = {
             type: ScanType.FOOD
         };
 
-        // redirect request to scan service
-        // TODO handle errors
+        // Redirect request to scan service
         const response = await firstValueFrom(
             this.httpService.post<ScanCreate.Response, any>(
                 microserviceUrls.scan + "/scan",
                 body
             )
-            //     .pipe(
-            //     catchError((error: AxiosError) => {
-            //         // Извлекаем детали ошибки из ответа микросервиса
-            //         const errorResponse = error.response?.data;
-            //         throw new BadRequestException(
-            //             errorResponse || 'Something went wrong',
-            //         );
-            //     }),
-            // ),
         );
 
         return response.data;

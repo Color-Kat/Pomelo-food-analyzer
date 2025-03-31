@@ -1,6 +1,6 @@
-import {Body, Controller, Post} from '@nestjs/common';
-import {ScanService} from './scan.service';
 import {ScanCreate} from "@app/contracts";
+import {Body, Controller, Get, Post} from '@nestjs/common';
+import {ScanService} from './scan.service';
 
 @Controller('scan')
 export class ScanController {
@@ -14,10 +14,10 @@ export class ScanController {
         };
     }
 
-    // @Get()
-    // findAll() {
-    //   return this.scanService.findAll();
-    // }
+    @Get()
+    findAll() {
+      return this.scanService.findAll();
+    }
     //
     // @Get(':id')
     // findOne(@Param('id') id: string) {
