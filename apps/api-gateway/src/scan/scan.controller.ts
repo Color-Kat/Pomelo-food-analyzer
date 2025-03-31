@@ -1,11 +1,11 @@
-import {Controller, Get, Inject, OnModuleInit} from '@nestjs/common';
-import {ClientKafka} from "@nestjs/microservices";
-import {catchError, firstValueFrom} from "rxjs";
-import {ConfigService} from "@nestjs/config";
-import {HttpService} from "@nestjs/axios";
 import {microserviceUrls} from "@app/config";
 import {ScanCreate} from "@app/contracts";
 import {ScanType} from "@app/interfaces";
+import {HttpService} from "@nestjs/axios";
+import {Controller, Get, Inject, OnModuleInit} from '@nestjs/common';
+import {ConfigService} from "@nestjs/config";
+import {ClientKafka} from "@nestjs/microservices";
+import {firstValueFrom} from "rxjs";
 
 @Controller('scan')
 export class ScanController implements OnModuleInit {
@@ -27,7 +27,7 @@ export class ScanController implements OnModuleInit {
     @Get()
     async addNewScan() {
         const body = {
-            type: ScanType.FOOD+'asdf'
+            type: ScanType.FOOD
         };
 
         // redirect request to scan service
@@ -37,6 +37,15 @@ export class ScanController implements OnModuleInit {
                 microserviceUrls.scan + "/scan",
                 body
             )
+            //     .pipe(
+            //     catchError((error: AxiosError) => {
+            //         // Извлекаем детали ошибки из ответа микросервиса
+            //         const errorResponse = error.response?.data;
+            //         throw new BadRequestException(
+            //             errorResponse || 'Something went wrong',
+            //         );
+            //     }),
+            // ),
         );
 
         return response.data;

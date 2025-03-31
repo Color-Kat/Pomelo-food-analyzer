@@ -1,9 +1,10 @@
-import {NestFactory} from "@nestjs/core";
-import {AppModule} from "./app.module";
-import {MicroserviceOptions} from "@nestjs/microservices";
 import {kafkaConsumers} from "@app/kafka";
-import {ConfigService} from "@nestjs/config";
 import {ValidationPipe} from "@nestjs/common";
+import {ConfigService} from "@nestjs/config";
+import {NestFactory} from "@nestjs/core";
+import {MicroserviceOptions} from "@nestjs/microservices";
+import {AxiosHttpExceptionFilter} from "../filters/axios-http-exception.filter";
+import {AppModule} from "./app.module";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -12,6 +13,7 @@ async function bootstrap() {
     const port = configService.get<number>('API_GATEWAY_PORT', 3002);
 
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
+    app.useGlobalFilters(new AxiosHttpExceptionFilter());
 
     // Connect Kafka
     app.connectMicroservice<MicroserviceOptions>(kafkaConsumers.apiGatewayService);
