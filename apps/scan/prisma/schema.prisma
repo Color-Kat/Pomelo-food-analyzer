@@ -17,9 +17,9 @@ datasource db {
 model Scan {
   id          String   @id @default(cuid())
   type        String
-  name        String
-  photo_url   String
   status      String
+  name        String?
+  photoUrl    String?
   ingredients String[]
   userId      String
   updatedAt   DateTime @updatedAt

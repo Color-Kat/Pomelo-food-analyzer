@@ -882,9 +882,9 @@ export namespace Prisma {
   export type ScanMinAggregateOutputType = {
     id: string | null
     type: string | null
-    name: string | null
-    photo_url: string | null
     status: string | null
+    name: string | null
+    photoUrl: string | null
     userId: string | null
     updatedAt: Date | null
     createdAt: Date | null
@@ -893,9 +893,9 @@ export namespace Prisma {
   export type ScanMaxAggregateOutputType = {
     id: string | null
     type: string | null
-    name: string | null
-    photo_url: string | null
     status: string | null
+    name: string | null
+    photoUrl: string | null
     userId: string | null
     updatedAt: Date | null
     createdAt: Date | null
@@ -904,9 +904,9 @@ export namespace Prisma {
   export type ScanCountAggregateOutputType = {
     id: number
     type: number
-    name: number
-    photo_url: number
     status: number
+    name: number
+    photoUrl: number
     ingredients: number
     userId: number
     updatedAt: number
@@ -918,9 +918,9 @@ export namespace Prisma {
   export type ScanMinAggregateInputType = {
     id?: true
     type?: true
-    name?: true
-    photo_url?: true
     status?: true
+    name?: true
+    photoUrl?: true
     userId?: true
     updatedAt?: true
     createdAt?: true
@@ -929,9 +929,9 @@ export namespace Prisma {
   export type ScanMaxAggregateInputType = {
     id?: true
     type?: true
-    name?: true
-    photo_url?: true
     status?: true
+    name?: true
+    photoUrl?: true
     userId?: true
     updatedAt?: true
     createdAt?: true
@@ -940,9 +940,9 @@ export namespace Prisma {
   export type ScanCountAggregateInputType = {
     id?: true
     type?: true
-    name?: true
-    photo_url?: true
     status?: true
+    name?: true
+    photoUrl?: true
     ingredients?: true
     userId?: true
     updatedAt?: true
@@ -1025,9 +1025,9 @@ export namespace Prisma {
   export type ScanGroupByOutputType = {
     id: string
     type: string
-    name: string
-    photo_url: string
     status: string
+    name: string | null
+    photoUrl: string | null
     ingredients: string[]
     userId: string
     updatedAt: Date
@@ -1054,9 +1054,9 @@ export namespace Prisma {
   export type ScanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
-    name?: boolean
-    photo_url?: boolean
     status?: boolean
+    name?: boolean
+    photoUrl?: boolean
     ingredients?: boolean
     userId?: boolean
     updatedAt?: boolean
@@ -1066,9 +1066,9 @@ export namespace Prisma {
   export type ScanSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
-    name?: boolean
-    photo_url?: boolean
     status?: boolean
+    name?: boolean
+    photoUrl?: boolean
     ingredients?: boolean
     userId?: boolean
     updatedAt?: boolean
@@ -1078,9 +1078,9 @@ export namespace Prisma {
   export type ScanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
-    name?: boolean
-    photo_url?: boolean
     status?: boolean
+    name?: boolean
+    photoUrl?: boolean
     ingredients?: boolean
     userId?: boolean
     updatedAt?: boolean
@@ -1090,16 +1090,16 @@ export namespace Prisma {
   export type ScanSelectScalar = {
     id?: boolean
     type?: boolean
-    name?: boolean
-    photo_url?: boolean
     status?: boolean
+    name?: boolean
+    photoUrl?: boolean
     ingredients?: boolean
     userId?: boolean
     updatedAt?: boolean
     createdAt?: boolean
   }
 
-  export type ScanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "name" | "photo_url" | "status" | "ingredients" | "userId" | "updatedAt" | "createdAt", ExtArgs["result"]["scan"]>
+  export type ScanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "status" | "name" | "photoUrl" | "ingredients" | "userId" | "updatedAt" | "createdAt", ExtArgs["result"]["scan"]>
 
   export type $ScanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Scan"
@@ -1107,9 +1107,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       type: string
-      name: string
-      photo_url: string
       status: string
+      name: string | null
+      photoUrl: string | null
       ingredients: string[]
       userId: string
       updatedAt: Date
@@ -1539,9 +1539,9 @@ export namespace Prisma {
   interface ScanFieldRefs {
     readonly id: FieldRef<"Scan", 'String'>
     readonly type: FieldRef<"Scan", 'String'>
-    readonly name: FieldRef<"Scan", 'String'>
-    readonly photo_url: FieldRef<"Scan", 'String'>
     readonly status: FieldRef<"Scan", 'String'>
+    readonly name: FieldRef<"Scan", 'String'>
+    readonly photoUrl: FieldRef<"Scan", 'String'>
     readonly ingredients: FieldRef<"Scan", 'String[]'>
     readonly userId: FieldRef<"Scan", 'String'>
     readonly updatedAt: FieldRef<"Scan", 'DateTime'>
@@ -1929,9 +1929,9 @@ export namespace Prisma {
   export const ScanScalarFieldEnum: {
     id: 'id',
     type: 'type',
-    name: 'name',
-    photo_url: 'photo_url',
     status: 'status',
+    name: 'name',
+    photoUrl: 'photoUrl',
     ingredients: 'ingredients',
     userId: 'userId',
     updatedAt: 'updatedAt',
@@ -1955,6 +1955,14 @@ export namespace Prisma {
   };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -2013,9 +2021,9 @@ export namespace Prisma {
     NOT?: ScanWhereInput | ScanWhereInput[]
     id?: StringFilter<"Scan"> | string
     type?: StringFilter<"Scan"> | string
-    name?: StringFilter<"Scan"> | string
-    photo_url?: StringFilter<"Scan"> | string
     status?: StringFilter<"Scan"> | string
+    name?: StringNullableFilter<"Scan"> | string | null
+    photoUrl?: StringNullableFilter<"Scan"> | string | null
     ingredients?: StringNullableListFilter<"Scan">
     userId?: StringFilter<"Scan"> | string
     updatedAt?: DateTimeFilter<"Scan"> | Date | string
@@ -2025,9 +2033,9 @@ export namespace Prisma {
   export type ScanOrderByWithRelationInput = {
     id?: SortOrder
     type?: SortOrder
-    name?: SortOrder
-    photo_url?: SortOrder
     status?: SortOrder
+    name?: SortOrderInput | SortOrder
+    photoUrl?: SortOrderInput | SortOrder
     ingredients?: SortOrder
     userId?: SortOrder
     updatedAt?: SortOrder
@@ -2040,9 +2048,9 @@ export namespace Prisma {
     OR?: ScanWhereInput[]
     NOT?: ScanWhereInput | ScanWhereInput[]
     type?: StringFilter<"Scan"> | string
-    name?: StringFilter<"Scan"> | string
-    photo_url?: StringFilter<"Scan"> | string
     status?: StringFilter<"Scan"> | string
+    name?: StringNullableFilter<"Scan"> | string | null
+    photoUrl?: StringNullableFilter<"Scan"> | string | null
     ingredients?: StringNullableListFilter<"Scan">
     userId?: StringFilter<"Scan"> | string
     updatedAt?: DateTimeFilter<"Scan"> | Date | string
@@ -2052,9 +2060,9 @@ export namespace Prisma {
   export type ScanOrderByWithAggregationInput = {
     id?: SortOrder
     type?: SortOrder
-    name?: SortOrder
-    photo_url?: SortOrder
     status?: SortOrder
+    name?: SortOrderInput | SortOrder
+    photoUrl?: SortOrderInput | SortOrder
     ingredients?: SortOrder
     userId?: SortOrder
     updatedAt?: SortOrder
@@ -2070,9 +2078,9 @@ export namespace Prisma {
     NOT?: ScanScalarWhereWithAggregatesInput | ScanScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Scan"> | string
     type?: StringWithAggregatesFilter<"Scan"> | string
-    name?: StringWithAggregatesFilter<"Scan"> | string
-    photo_url?: StringWithAggregatesFilter<"Scan"> | string
     status?: StringWithAggregatesFilter<"Scan"> | string
+    name?: StringNullableWithAggregatesFilter<"Scan"> | string | null
+    photoUrl?: StringNullableWithAggregatesFilter<"Scan"> | string | null
     ingredients?: StringNullableListFilter<"Scan">
     userId?: StringWithAggregatesFilter<"Scan"> | string
     updatedAt?: DateTimeWithAggregatesFilter<"Scan"> | Date | string
@@ -2082,9 +2090,9 @@ export namespace Prisma {
   export type ScanCreateInput = {
     id?: string
     type: string
-    name: string
-    photo_url: string
     status: string
+    name?: string | null
+    photoUrl?: string | null
     ingredients?: ScanCreateingredientsInput | string[]
     userId: string
     updatedAt?: Date | string
@@ -2094,9 +2102,9 @@ export namespace Prisma {
   export type ScanUncheckedCreateInput = {
     id?: string
     type: string
-    name: string
-    photo_url: string
     status: string
+    name?: string | null
+    photoUrl?: string | null
     ingredients?: ScanCreateingredientsInput | string[]
     userId: string
     updatedAt?: Date | string
@@ -2106,9 +2114,9 @@ export namespace Prisma {
   export type ScanUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    photo_url?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ingredients?: ScanUpdateingredientsInput | string[]
     userId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -2118,9 +2126,9 @@ export namespace Prisma {
   export type ScanUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    photo_url?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ingredients?: ScanUpdateingredientsInput | string[]
     userId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -2130,9 +2138,9 @@ export namespace Prisma {
   export type ScanCreateManyInput = {
     id?: string
     type: string
-    name: string
-    photo_url: string
     status: string
+    name?: string | null
+    photoUrl?: string | null
     ingredients?: ScanCreateingredientsInput | string[]
     userId: string
     updatedAt?: Date | string
@@ -2142,9 +2150,9 @@ export namespace Prisma {
   export type ScanUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    photo_url?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ingredients?: ScanUpdateingredientsInput | string[]
     userId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -2154,9 +2162,9 @@ export namespace Prisma {
   export type ScanUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    photo_url?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ingredients?: ScanUpdateingredientsInput | string[]
     userId?: StringFieldUpdateOperationsInput | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -2178,6 +2186,21 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type StringNullableListFilter<$PrismaModel = never> = {
     equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     has?: string | StringFieldRefInput<$PrismaModel> | null
@@ -2197,12 +2220,17 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type ScanCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
-    name?: SortOrder
-    photo_url?: SortOrder
     status?: SortOrder
+    name?: SortOrder
+    photoUrl?: SortOrder
     ingredients?: SortOrder
     userId?: SortOrder
     updatedAt?: SortOrder
@@ -2212,9 +2240,9 @@ export namespace Prisma {
   export type ScanMaxOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
-    name?: SortOrder
-    photo_url?: SortOrder
     status?: SortOrder
+    name?: SortOrder
+    photoUrl?: SortOrder
     userId?: SortOrder
     updatedAt?: SortOrder
     createdAt?: SortOrder
@@ -2223,9 +2251,9 @@ export namespace Prisma {
   export type ScanMinOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
-    name?: SortOrder
-    photo_url?: SortOrder
     status?: SortOrder
+    name?: SortOrder
+    photoUrl?: SortOrder
     userId?: SortOrder
     updatedAt?: SortOrder
     createdAt?: SortOrder
@@ -2247,6 +2275,24 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -2271,6 +2317,10 @@ export namespace Prisma {
     set?: string
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type ScanUpdateingredientsInput = {
     set?: string[]
     push?: string | string[]
@@ -2292,6 +2342,20 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -2331,6 +2395,34 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Scan" ALTER COLUMN "name" DROP NOT NULL,
+ALTER COLUMN "photo_url" DROP NOT NULL;

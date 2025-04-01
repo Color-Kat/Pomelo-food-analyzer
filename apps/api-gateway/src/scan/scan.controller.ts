@@ -1,13 +1,13 @@
-import {microserviceUrls} from "@app/config";
 import {ScanCreate} from "@app/contracts";
-import {ScanType} from "@app/interfaces";
+import {ScanGetScan} from "@app/contracts/scan/scan.get-scan";
+import {ScanGetScans} from "@app/contracts/scan/scan.get-scans";
 import {HttpService} from "@nestjs/axios";
-import {Controller, Get, Inject, OnModuleInit} from '@nestjs/common';
+import {Body, Controller, Get, Inject, OnModuleInit, Param, Post} from '@nestjs/common';
 import {ConfigService} from "@nestjs/config";
 import {ClientKafka} from "@nestjs/microservices";
 import {firstValueFrom} from "rxjs";
 
-@Controller('scan')
+@Controller('scans')
 export class ScanController implements OnModuleInit {
     constructor(
         @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
@@ -23,27 +23,37 @@ export class ScanController implements OnModuleInit {
     }
 
     @Get()
-    async getAllScans() {
+    async getAll() {
         // Redirect request to scan service
         const response = await firstValueFrom(
-            this.httpService.get(microserviceUrls.scan + "/scan")
+            this.httpService.get<
+                ScanGetScans.Response,
+                ScanGetScans.Request
+            >(ScanGetScans.url)
         );
 
         return response.data;
     }
 
-    // TODO: Switch to POST
-    // async addNewScan(@Body() body: { type: string }) {
-    @Get('/add')
-    async addNewScan() {
-        const body = {
-            type: ScanType.FOOD
-        };
-
+    @Get("/:id")
+    async getOne(@Param('id') id: string) {
         // Redirect request to scan service
         const response = await firstValueFrom(
-            this.httpService.post<ScanCreate.Response, any>(
-                microserviceUrls.scan + "/scan",
+            this.httpService.get<
+                ScanGetScan.Response,
+                ScanGetScan.Request
+            >(ScanGetScan.getUrl(id))
+        );
+
+        return response.data;
+    }
+
+    @Post()
+    async create(@Body() body: ScanCreate.Request) {
+        // Redirect request to scan service
+        const response = await firstValueFrom(
+            this.httpService.post<ScanCreate.Response, ScanCreate.Request>(
+                ScanCreate.url,
                 body
             )
         );

@@ -1,0 +1,14 @@
+### Get all scans
+GET http://localhost:3000/scans
+
+### Get a scan by id
+GET http://localhost:3000/scans/cm8yplg2f0000pfj0tcjvhx94
+
+### Create a scan
+POST http://localhost:3000/scans
+Content-Type: application/json
+
+{
+  "type": "food",
+  "userId": "admin"
+}
