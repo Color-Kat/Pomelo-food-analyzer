@@ -9,4 +9,9 @@ RUN npm install
 COPY . .
 
 # Run in development mode
-CMD ["npm", "run", "start:dev", "scan"]
+#CMD ["sh", "-c", "npx prisma generate && npx prisma migrate deploy"]
+#CMD ["npm", "run", "start:dev", "scan"]
+CMD cd apps/scan && \
+    npx prisma generate && \
+    npx prisma migrate deploy && \
+    npm run start:dev scan
