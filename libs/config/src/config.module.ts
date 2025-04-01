@@ -16,6 +16,7 @@ import * as Joi from 'joi';
                 ACCOUNT_DB_NAME: Joi.string().required(),
 
                 // Ports and URLs of all microservices
+                WEB_HOST: Joi.string().uri().required(),
                 WEB_PORT: Joi.number().port().required(),
                 API_GATEWAY_HOST: Joi.string().uri().required(),
                 API_GATEWAY_PORT: Joi.number().port().required(),

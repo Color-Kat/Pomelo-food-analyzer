@@ -2,10 +2,10 @@ import {ScanCreate} from "@app/contracts";
 import {ScanGetScan} from "@app/contracts/scan/scan.get-scan";
 import {ScanGetScans} from "@app/contracts/scan/scan.get-scans";
 import {HttpService} from "@nestjs/axios";
-import {Body, Controller, Get, Inject, OnModuleInit, Param, Post} from '@nestjs/common';
+import {Body, Controller, Get, Inject, OnModuleInit, Param, Post, Sse} from '@nestjs/common';
 import {ConfigService} from "@nestjs/config";
 import {ClientKafka} from "@nestjs/microservices";
-import {firstValueFrom} from "rxjs";
+import {firstValueFrom, interval, map, Observable} from "rxjs";
 
 @Controller('scans')
 export class ScanController implements OnModuleInit {
@@ -20,6 +20,12 @@ export class ScanController implements OnModuleInit {
         // Subscribe to response for .send method
         this.kafkaService.subscribeToResponseOf('scan.add-scan.command');
         this.kafkaService.connect();
+    }
+
+    @Sse(':id/status-updates')
+    sse(@Param('id') id: string): Observable<MessageEvent> {
+        console.log(id);
+        return interval(1000).pipe(map((_) => ({ data: { hello: 'world' } } as any)));
     }
 
     @Get()

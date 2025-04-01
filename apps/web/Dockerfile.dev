@@ -7,6 +7,7 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8000
+EXPOSE ${WEB_PORT}
 
-CMD ["npm", "run", "dev", "--", "--port", "8000"]
+#CMD ["npm", "run", "dev", "--", "--port", "${WEB_PORT}"]
+CMD ["sh", "-c", "npm run dev -- --port ${WEB_PORT}"]
