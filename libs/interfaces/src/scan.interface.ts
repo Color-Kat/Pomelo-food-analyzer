@@ -4,11 +4,12 @@ export enum ScanType {
 }
 
 export enum ScanStatus {
-    STARTED = 'started',
-    PHOTO_UPLOADED = 'uploaded',
+    CREATED     = 'created',
+    // PHOTO_UPLOADED = 'uploaded',
     RECOGNIZING = 'recognizing',
-    ANALYZING = 'analyzing',
-    COMPLETED = 'completed',
+    ANALYZING   = 'analyzing',
+    COMPLETED   = 'completed',
+    FAILED      = 'failed',
 }
 
 export interface IScan {

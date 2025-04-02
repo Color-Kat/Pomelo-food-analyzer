@@ -30,6 +30,14 @@ export class ScanController {
         };
     }
 
+    // @EventPattern()
+
+
+
+
+
+
+
     // @Patch(':id')
     // update(@Param('id') id: string, @Body() updateScanDto: UpdateScanDto) {
     //   return this.scanService.update(+id, updateScanDto);

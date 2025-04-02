@@ -47,10 +47,7 @@ export class ScanService {
         // Mock status change
         setInterval(() => {
             switch (scanEntity.status) {
-                case ScanStatus.STARTED:
-                    scanEntity.setStatus(ScanStatus.PHOTO_UPLOADED);
-                    break;
-                case ScanStatus.PHOTO_UPLOADED:
+                case ScanStatus.CREATED:
                     scanEntity.setStatus(ScanStatus.RECOGNIZING);
                     break;
                 case ScanStatus.RECOGNIZING:

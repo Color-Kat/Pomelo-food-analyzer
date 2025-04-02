@@ -13,7 +13,7 @@ export class AppController {
     ) {
     }
 
-    @MessagePattern('scan' + PingContract.topic)
+    @MessagePattern(PingContract.getTopic('scan'))
     async handlePing(data: PingContract.Request) {
         return {
             status: 'ok!',
@@ -22,22 +22,8 @@ export class AppController {
         };
     }
 
-    @MessagePattern('scan.add-scan.command')
-    async addNewScan(data: any) {
-        console.log("data received", data);
-        return {
-            scan: {
-                id: 'sha256:ovnskdq5dn',
-                type: data.scan.type,
-                ingredients: [],
-            }
-        }
-    }
-
     @Get()
     getHello(): string {
-        console.log(this.configService.get('DATABASE_URL'))
-
         return this.appService.getHello();
     }
 }

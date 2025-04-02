@@ -16,7 +16,7 @@ export class ScanEntity implements IScan {
     constructor(scan: Partial<IScan>) {
         if (scan.id) this.id = scan.id;
         this.type = scan.type || ScanType.FOOD;
-        this.status = scan.status || ScanStatus.STARTED;
+        this.status = scan.status || ScanStatus.CREATED;
         this.userId = scan.userId || '';
         this.name = scan.name || '';
         this.photoUrl = scan.photoUrl || '';
