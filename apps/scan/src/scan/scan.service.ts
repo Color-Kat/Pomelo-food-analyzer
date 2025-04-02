@@ -44,10 +44,25 @@ export class ScanService {
         const result = await this.scanRepository.create(scanEntity);
         scanEntity.id = result.id;
 
+        // Mock status change
         setInterval(() => {
-            scanEntity.setStatus(Math.random() > 0.5 ? ScanStatus.PHOTO_UPLOADED : ScanStatus.ANALYZING);
+            switch (scanEntity.status) {
+                case ScanStatus.STARTED:
+                    scanEntity.setStatus(ScanStatus.PHOTO_UPLOADED);
+                    break;
+                case ScanStatus.PHOTO_UPLOADED:
+                    scanEntity.setStatus(ScanStatus.RECOGNIZING);
+                    break;
+                case ScanStatus.RECOGNIZING:
+                    scanEntity.setStatus(ScanStatus.ANALYZING);
+                    break;
+                case ScanStatus.ANALYZING:
+                    scanEntity.setStatus(ScanStatus.COMPLETED);
+                    break;
+            }
+
             this.emitScanStatusChanged(scanEntity.id, scanEntity.status);
-        }, 1500)
+        }, 1000)
 
         return result;
     }

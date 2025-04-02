@@ -25,4 +25,17 @@ export class ScanRepository {
             data
         }) as Promise<IScan>;
     }
+
+    async update(data: ScanEntity) {
+        return this.prismaService.scan.update({
+            where: {id: data.id},
+            data
+        }) as Promise<IScan>;
+    }
+
+    async delete(data: ScanEntity) {
+        return this.prismaService.scan.delete({
+            where: {id: data.id},
+        });
+    }
 }
