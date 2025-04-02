@@ -1,10 +1,10 @@
 import {ScanCreate} from "@app/contracts";
-import {Inject, Injectable, NotFoundException} from '@nestjs/common';
-import {ScanEntity} from "@scan/scan/scan.entity";
-import {ScanRepository} from "@scan/scan/scan.repository";
-import {ClientKafka} from "@nestjs/microservices";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
 import {ScanStatus} from "@app/interfaces";
+import {Inject, Injectable, NotFoundException} from '@nestjs/common';
+import {ClientKafka} from "@nestjs/microservices";
+import {ScanEntity} from "@scan/scan/scan.entity";
+import {ScanRepository} from "@scan/scan/scan.repository";
 
 @Injectable()
 export class ScanService {
@@ -14,11 +14,17 @@ export class ScanService {
     ) {
     }
 
-    findAll() {
+    /**
+     * Transfer updated scan status to the client using kafka and SSE in api-gateway
+     */
+    emitScanStatusChanged(scanId: string, status: ScanStatus) {
         this.kafkaService.emit<void, ScanStatusChanged.Response>(ScanStatusChanged.topic, {
-            status: Math.random() > 0.5 ? ScanStatus.ANALYZING : ScanStatus.STARTED,
-            id: 'cm8yplg2f0000pfj0tcjvhx94'
-        })
+            status: status,
+            id: scanId
+        });
+    }
+
+    findAll() {
         return this.scanRepository.getAll();
     }
 
@@ -35,9 +41,13 @@ export class ScanService {
             createScanDto
         );
 
-        // scanEntity.setStatus(ScanStatus.PHOTO_UPLOADED);
-
         const result = await this.scanRepository.create(scanEntity);
+        scanEntity.id = result.id;
+
+        setInterval(() => {
+            scanEntity.setStatus(Math.random() > 0.5 ? ScanStatus.PHOTO_UPLOADED : ScanStatus.ANALYZING);
+            this.emitScanStatusChanged(scanEntity.id, scanEntity.status);
+        }, 1500)
 
         return result;
     }
