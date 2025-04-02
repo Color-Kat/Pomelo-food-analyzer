@@ -4,15 +4,19 @@ import {ScanGetScans} from "@app/contracts/scan/scan.get-scans";
 import {HttpService} from "@nestjs/axios";
 import {Body, Controller, Get, Inject, OnModuleInit, Param, Post, Sse} from '@nestjs/common';
 import {ConfigService} from "@nestjs/config";
-import {ClientKafka} from "@nestjs/microservices";
-import {firstValueFrom, interval, map, Observable} from "rxjs";
+import {ClientKafka, EventPattern} from "@nestjs/microservices";
+import {firstValueFrom, interval, map, Observable, Subject} from "rxjs";
+import {ScanService} from "@api-gateway/scan/scan.service";
+import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
+import {ScanStatus} from "@app/interfaces";
 
 @Controller('scans')
 export class ScanController implements OnModuleInit {
     constructor(
         @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
         private readonly configService: ConfigService,
-        private readonly httpService: HttpService
+        private readonly httpService: HttpService,
+        private readonly scanService: ScanService
     ) {
     }
 
@@ -23,9 +27,19 @@ export class ScanController implements OnModuleInit {
     }
 
     @Sse(':id/status-updates')
-    sse(@Param('id') id: string): Observable<MessageEvent> {
-        console.log(id);
-        return interval(1000).pipe(map((_) => ({ data: { hello: 'world' } } as any)));
+    sse(@Param('id') id: string) {
+        // return interval(1000).pipe(map((_) => ({ data: { hello: 'world' } } as any)));
+        const subject = new Subject<any>();
+
+        // Register this subject to receive updates for the given orderId
+        this.scanService.registerClient(id, subject);
+
+        return subject.asObservable();
+    }
+
+    @EventPattern(ScanStatusChanged.topic)
+    handleOrderStatusChanged(data: ScanStatusChanged.Response) {
+        this.scanService.handleOrderStatusChanged(data);
     }
 
     @Get()

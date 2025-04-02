@@ -1,14 +1,24 @@
 import {ScanCreate} from "@app/contracts";
-import {Injectable, NotFoundException} from '@nestjs/common';
+import {Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {ScanEntity} from "@scan/scan/scan.entity";
 import {ScanRepository} from "@scan/scan/scan.repository";
+import {ClientKafka} from "@nestjs/microservices";
+import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
+import {ScanStatus} from "@app/interfaces";
 
 @Injectable()
 export class ScanService {
-    constructor(private readonly scanRepository: ScanRepository) {
+    constructor(
+        private readonly scanRepository: ScanRepository,
+        @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
+    ) {
     }
 
     findAll() {
+        this.kafkaService.emit<void, ScanStatusChanged.Response>(ScanStatusChanged.topic, {
+            status: Math.random() > 0.5 ? ScanStatus.ANALYZING : ScanStatus.STARTED,
+            id: 'cm8yplg2f0000pfj0tcjvhx94'
+        })
         return this.scanRepository.getAll();
     }
 
