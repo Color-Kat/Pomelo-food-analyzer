@@ -2,7 +2,7 @@
 /dist
 /node_modules
 /build
-
+/venv
 # Logs
 logs
 *.log
