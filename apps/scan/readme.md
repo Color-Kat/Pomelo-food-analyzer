@@ -79,15 +79,15 @@ This microservice will manage scans and its status.
 * `COMPLETED`: Analysis completed successfully.
 
 #### Scan Statuses in Kafka
-`CREATED`: Initial state
-`RECOGNITION_PENDING`: Sent for recognition
-`RECOGNIZING`: currently recognizing
-`RECOGNITION_FAILED`: recognition error
-`RECOGNIZED`: text successfully recognized (but not saved in DB yer)
-`INGREDIENTS_SAVED`: recognized text is saved in DB
-`ANALYSIS_PENDING`: sent for analysis
-`ANALYZING`: currently analyzing
-`ANALYSIS_FAILED`: analysis error
-`ANALYZED`: analysis completed (but not saved in DB yet)
-`COMPLETED`: scan is fully completed
-`FAILED`: something went wrong
+* `CREATED`: Initial state
+* `RECOGNITION_PENDING`: Sent for recognition
+* `RECOGNIZING`: currently recognizing
+* `RECOGNITION_FAILED`: recognition error
+* `RECOGNIZED`: text successfully recognized (but not saved in DB yer)
+* `INGREDIENTS_SAVED`: recognized text is saved in DB
+* `ANALYSIS_PENDING`: sent for analysis
+* `ANALYZING`: currently analyzing
+* `ANALYSIS_FAILED`: analysis error
+* `ANALYZED`: analysis completed (but not saved in DB yet)
+* `COMPLETED`: scan is fully completed
+* `FAILED`: something went wrong
