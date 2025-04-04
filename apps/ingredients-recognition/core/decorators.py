@@ -7,9 +7,12 @@ def EventPattern(topic):
         async def wrapper(self, message):
             data = message.value
             if data is None:
-                print(f"Пропущено пустое сообщение для топика {topic}")
+                print(f"Received empty message in topic: {topic} - skip")
                 return
+            
             result = await method(self, data)
+            
+            # If method returns something, reply with this result
             if result is not None:
                 reply_topic = f"{topic}.reply"
                 headers = message.headers
@@ -19,7 +22,9 @@ def EventPattern(topic):
                     result,
                     headers=[('kafka_correlationId', correlation_id)] if correlation_id else None
                 )
-                print(f"Автоматически отправлен ответ в {reply_topic}: {result}")
+                
+                print(f"Auto reply to {reply_topic}: {result}")
+                
         wrapper._event_pattern = topic
         return wrapper
     return decorator
@@ -27,9 +32,11 @@ def EventPattern(topic):
 class ControllerMeta(type):
     def __new__(cls, name, bases, attrs):
         event_handlers = {}
+        
         for key, value in attrs.items():
             if hasattr(value, '_event_pattern'):
                 event_handlers[value._event_pattern] = value
+                
         attrs['_event_handlers'] = event_handlers
         return super().__new__(cls, name, bases, attrs)
 
@@ -43,4 +50,4 @@ class BaseController(metaclass=ControllerMeta):
         if handler:
             await handler(self, message)
         else:
-            print(f"Нет обработчика для топика: {topic}")
+            print(f"No handler for topic: {topic}")

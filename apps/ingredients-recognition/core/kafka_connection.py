@@ -17,32 +17,34 @@ class KafkaConnection:
             enable_auto_commit=self.config.enable_auto_commit,
             value_deserializer=self._deserialize_message
         )
+        
         self.producer = AIOKafkaProducer(
             client_id=self.config.client_id,
             bootstrap_servers=self.config.bootstrap_servers,
             value_serializer=lambda v: json.dumps(v).encode('utf-8')
         )
+        
         while True:
             try:
                 await self.consumer.start()
                 await self.producer.start()
-                print(f"Успешно подключено к Kafka: {self.config.bootstrap_servers}")
+                print(f"Successfully connected to Kafka: {self.config.bootstrap_servers}")
                 break
             except Exception as e:
-                print(f"Ошибка подключения: {e}")
+                print(f"Kafka connection error: {e}")
                 await asyncio.sleep(3)
 
     def _deserialize_message(self, message):
         if message is None:
-            print("Получено пустое сообщение (None)")
+            print("Received empty message (None)")
             return None
         try:
             return json.loads(message.decode('utf-8'))
         except json.JSONDecodeError as e:
-            print(f"Ошибка десериализации сообщения: {e}. Raw data: {message}")
+            print(f"Kafka message deserialization error: {e}. Raw data: {message}")
             return None
         except Exception as e:
-            print(f"Неизвестная ошибка при десериализации: {e}. Raw data: {message}")
+            print(f"Unknown kafka message deserialization error: {e}. Raw data: {message}")
             return None
 
     async def disconnect(self):

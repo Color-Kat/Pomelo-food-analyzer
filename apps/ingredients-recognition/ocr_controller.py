@@ -7,27 +7,22 @@ import asyncio
 class OCRController(BaseController):
     @EventPattern("ingredients-recognition.ping.request")
     async def handle_ping(self, data):
-        ping_size = len(json.dumps(data).encode('utf-8'))
-        print(f"Получено ping-сообщение: {data}, размер: {ping_size} байт")
-        print(type(data['startTime']))
-        print(datetime.now())
-        print(type(datetime.now()))
+        print(f"Got ping message: {data}")
 
         pong_data = {
-            "status": "success",
+            "status": "ok",
             "service": "ingredients-recognition",
             "requestTime": f"{time.time()*1000 - data['startTime']}ms"
         }
-        pong_size = len(json.dumps(pong_data).encode('utf-8'))
-        print(f"Подготовлен pong-ответ: {pong_data}, размер: {pong_size} байт")
+        print(f"Send pong reply: {pong_data}")
         
-        return pong_data  # Автоматически отправится в .reply топик
+        return pong_data  # Auto reply to .reply topic
 
     @EventPattern("scan.photo-submitted.event")
     async def handle_photo_submitted(self, data):
-        print(f"Получено событие photo-submitted: {data}")
+        print(f"Got scan.photo-submitted.event: {data}")
         
-        await asyncio.sleep(2)  # Имитация обработки
+        await asyncio.sleep(2)  # Processing imitation
         
         recognition_result = {
             "status": "recognized",
@@ -35,9 +30,7 @@ class OCRController(BaseController):
             "timestamp": datetime.now().isoformat()
         }
         
-        # Здесь мы не используем return, поэтому ответ отправляется вручную
         await self.kafka_connection.send(
             "ingredients-recognition.ingredients-recognized.event",
             recognition_result
         )
-        print(f"Отправлено событие ingredients-recognized: {recognition_result}")
