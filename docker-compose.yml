@@ -19,12 +19,13 @@ services:
 
   web:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: ./apps/web/Dockerfile.dev
     ports:
       - ${WEB_PORT}:${WEB_PORT}
     volumes:
-      - ./apps/web:/app
+      - ./apps/web:/app/apps/web
+      - ./libs:/app/libs
       - /app/node_modules # Exclude node_modules
     environment:
       - NODE_ENV=development
@@ -73,13 +74,15 @@ services:
     container_name: ingredients-recognition
     build:
       context: ./apps/ingredients-recognition
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - ${INGREDIENTS_RECOGNITION_PORT}:${INGREDIENTS_RECOGNITION_PORT}
     volumes:
       - ./apps/ingredients-recognition:/app
     env_file:
       - .env
+    depends_on:
+      - kafka
 
   # === Additional services === #
 

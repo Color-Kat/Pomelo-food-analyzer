@@ -1,5 +1,6 @@
 'use client';
-import {ScanStatusChanged} from "@shared/contracts/src/scan/scan.status-changed";
+import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
+// import {ScanStatusChanged} from "@shared/contracts/src/scan/scan.status-changed";
 import React, {FC, useEffect} from 'react';
 
 export const SseTest: FC = ({}) => {
@@ -27,10 +28,10 @@ export const SseTest: FC = ({}) => {
         if (!scanId) return;
 
         const es = new EventSource(`http://localhost:3000/scans/${scanId}/status-updates`);
-        es.onopen = () => console.log(">>> Connection opened!");
+        es.onopen = () => console.log('>>> Connection opened!');
         es.onerror = (e) => {
-            console.log("ERROR!", e);
-            setScanId("");
+            console.log('ERROR!', e);
+            setScanId('');
         };
         es.onmessage = (e: MessageEvent) => {
             const data: ScanStatusChanged.Response = JSON.parse(e.data);

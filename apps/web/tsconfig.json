@@ -1,8 +1,10 @@
 {
+//  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
@@ -18,10 +20,35 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
+    "baseUrl": "../../",
     "paths": {
-      "@/*": ["./src/*"],
-      "@shared/*": ["../../libs/*"]
+      "@/*": ["./apps/web/src/*"],
+      "@shared/*": ["./libs/*"],
+      // Libs
+      "@app/config": [
+        "libs/config/src"
+      ],
+      "@app/config/*": [
+        "libs/config/src/*"
+      ],
+      "@app/contracts": [
+        "libs/contracts/src"
+      ],
+      "@app/contracts/*": [
+        "libs/contracts/src/*"
+      ],
+      "@app/interfaces": [
+        "libs/interfaces/src"
+      ],
+      "@app/interfaces/*": [
+        "libs/interfaces/src/*"
+      ],
+      "@app/kafka": [
+        "libs/kafka/src"
+      ],
+      "@app/kafka/*": [
+        "libs/kafka/src/*"
+      ]
     },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

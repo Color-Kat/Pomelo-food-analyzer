@@ -18,8 +18,8 @@ services:
 
   web:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile.prod
+      context: .
+      dockerfile: ./apps/web/Dockerfile.prod
     ports:
       - ${WEB_PORT}:${WEB_PORT}
     environment:
@@ -49,12 +49,14 @@ services:
     container_name: ingredients-recognition
     build:
       context: ./apps/ingredients-recognition
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     ports:
       - ${INGREDIENTS_RECOGNITION_PORT}:${INGREDIENTS_RECOGNITION_PORT}
     env_file:
       - .env
     restart: always
+    depends_on:
+      - kafka
 
 # ===== Additional Services ===== #
 
@@ -85,6 +87,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+    restart: always
     attach: false # don't show logs
 
 volumes:

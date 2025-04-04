@@ -19,6 +19,9 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       // Apps
+      "@web/*": [
+        "apps/web/src/*"
+      ],
       "@scan/*": [
         "apps/scan/src/*"
       ],

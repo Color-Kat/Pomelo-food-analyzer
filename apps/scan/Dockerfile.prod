@@ -16,7 +16,7 @@ WORKDIR /app
 
 COPY package.json ./
 
-RUN npm install --only=prod && \
+RUN npm install --omit=dev && \
     npm install prisma @prisma/client
 
 # Copy the built application and Prisma schema from the build stage

@@ -2,23 +2,38 @@ FROM node:23-alpine AS builder
 
 WORKDIR /app
 
+# Deps for monorepo shared libs
 COPY package*.json ./
 RUN npm install
 
-COPY . .
+# Copy monorepo libs
+COPY tsconfig*.json ./
+COPY libs ./libs/
+
+# Deps for web app
+COPY apps/web/package*.json ./apps/web/
+WORKDIR /app/apps/web
+RUN npm install
+
+# Copy web app
+COPY apps/web ./
 RUN npm run build
 
+# Production stage
 FROM node:23-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./
+# Copy only the necessary files from the builder stage
+COPY --from=builder /app/apps/web/package*.json ./
+COPY --from=builder /app/apps/web/.next ./.next/
+COPY --from=builder /app/apps/web/public ./public/
+COPY --from=builder /app/apps/web/next.config.ts ./
 
+# Install only production dependencies
 RUN npm install --production
 
-EXPOSE 8000
+EXPOSE ${WEB_PORT}
 
-CMD ["npm", "start", "--", "--port", "8000"]
+#CMD ["npm", "start", "--", "--port", "8000"]
+CMD ["sh", "-c", "npm start -- --port ${WEB_PORT}"]
