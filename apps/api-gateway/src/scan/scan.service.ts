@@ -28,7 +28,7 @@ export class ScanService {
     }
 
     handleScanStatusChanged(data: ScanStatusChanged.Response) {
-        const { id: scanId, status } = data;
+        const { scanId, status } = data;
         const clientSubject = this.sseClients.get(scanId);
 
         if (clientSubject) {

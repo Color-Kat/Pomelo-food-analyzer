@@ -21,7 +21,7 @@ class KafkaConnection:
         self.producer = AIOKafkaProducer(
             client_id=self.config.client_id,
             bootstrap_servers=self.config.bootstrap_servers,
-            value_serializer=lambda v: json.dumps(v).encode('utf-8')
+            value_serializer=lambda v: json.dumps(v).encode('utf-8'),  
         )
         
         while True:
@@ -32,7 +32,7 @@ class KafkaConnection:
                 break
             except Exception as e:
                 print(f"Kafka connection error: {e}")
-                await asyncio.sleep(3)
+                await asyncio.sleep(1)
 
     def _deserialize_message(self, message):
         if message is None:

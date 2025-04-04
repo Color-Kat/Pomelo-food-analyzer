@@ -20,7 +20,7 @@ export class ScanService {
     emitScanStatusChanged(scanId: string, status: ScanStatus) {
         this.kafkaService.emit<void, ScanStatusChanged.Response>(ScanStatusChanged.topic, {
             status: status,
-            id: scanId
+            scanId: scanId
         });
     }
 

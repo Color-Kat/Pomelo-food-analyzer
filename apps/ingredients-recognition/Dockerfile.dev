@@ -2,6 +2,8 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
+RUN pip install watchfiles
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -9,4 +11,11 @@ COPY . .
 
 EXPOSE 3040
 
-CMD ["python", "main.py"]
+# CMD ["python", "main.py"]
+# CMD ["watchmedo", "auto-restart", "--patterns=*.py", "--recursive", "--", "python", "main.py"]
+
+# Set env var to ensure logs are visible in real-time
+ENV PYTHONUNBUFFERED=1
+
+# Command to run the application with auto-reload
+CMD ["watchfiles", "--filter", "python", "python main.py", "."]

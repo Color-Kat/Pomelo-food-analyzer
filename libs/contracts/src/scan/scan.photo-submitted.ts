@@ -2,11 +2,15 @@ import {microserviceUrls} from "@app/config";
 import {IScan, ScanStatus, ScanType} from "@app/interfaces";
 import {IsEnum, IsString} from 'class-validator';
 
-export namespace ScanStatusChanged {
-    export const topic = "scan.status-changed.event";
+export namespace ScanPhotoSubmitted {
+    export const topic = "scan.photo-submitted.event";
 
-    export class Payload {
+    export class Request {
         scanId: string;
-        status: ScanStatus;
+        photoUrl: string;
+    }
+
+    export class Response {
+
     }
 }
