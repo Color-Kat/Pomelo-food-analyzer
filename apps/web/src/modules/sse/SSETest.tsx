@@ -34,7 +34,7 @@ export const SseTest: FC = ({}) => {
             setScanId('');
         };
         es.onmessage = (e: MessageEvent) => {
-            const data: ScanStatusChanged.Response = JSON.parse(e.data);
+            const data: ScanStatusChanged.Payload = JSON.parse(e.data);
             console.log(">>>", data);
             setScanStatus(data.status);
         };

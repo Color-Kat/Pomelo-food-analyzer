@@ -5,12 +5,8 @@ import {IsEnum, IsString} from 'class-validator';
 export namespace ScanPhotoSubmitted {
     export const topic = "scan.photo-submitted.event";
 
-    export class Request {
+    export class Payload {
         scanId: string;
         photoUrl: string;
-    }
-
-    export class Response {
-
     }
 }

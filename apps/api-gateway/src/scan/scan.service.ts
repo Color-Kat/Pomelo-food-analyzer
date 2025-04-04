@@ -11,7 +11,7 @@ import {finalize, firstValueFrom, Subject} from "rxjs";
 
 export type ScanStatusChangedEventSubject = Subject<{
     event: typeof ScanStatusChanged.topic,
-    data: ScanStatusChanged.Response,
+    data: ScanStatusChanged.Payload,
 }>
 
 @Injectable()
@@ -27,7 +27,7 @@ export class ScanService {
         this.sseClients.set(scanId, subject);
     }
 
-    handleScanStatusChanged(data: ScanStatusChanged.Response) {
+    handleScanStatusChanged(data: ScanStatusChanged.Payload) {
         const { scanId, status } = data;
         const clientSubject = this.sseClients.get(scanId);
 

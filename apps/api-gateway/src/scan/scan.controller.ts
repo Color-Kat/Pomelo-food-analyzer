@@ -28,7 +28,7 @@ export class ScanController implements OnModuleInit {
     }
 
     @EventPattern(ScanStatusChanged.topic)
-    handleOrderStatusChanged(data: ScanStatusChanged.Response) {
+    handleOrderStatusChanged(data: ScanStatusChanged.Payload) {
         this.scanService.handleScanStatusChanged(data);
     }
 

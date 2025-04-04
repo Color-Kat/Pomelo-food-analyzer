@@ -36,7 +36,7 @@ export class AppController {
 
     @Get("pytest")
     pytest() {
-        this.kafkaService.emit<void, ScanPhotoSubmitted.Request>(ScanPhotoSubmitted.topic,{
+        this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic,{
             scanId: '123',
             photoUrl: 'https://cdn-irec.r-99.com/sites/default/files/imagecache/copyright/user-images/81829/x5R8ArElB9DgNb8Viiw.jpg'
         })
