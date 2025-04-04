@@ -1,10 +1,10 @@
-import {ScanService} from "@api-gateway/scan/scan.service";
-import {ScanCreate} from "@app/contracts";
-import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
-import {HttpService} from "@nestjs/axios";
-import {Body, Controller, Get, Inject, OnModuleInit, Param, Post, Sse} from '@nestjs/common';
-import {ConfigService} from "@nestjs/config";
-import {ClientKafka, EventPattern} from "@nestjs/microservices";
+import { ScanService } from "@api-gateway/scan/scan.service";
+import { ScanCreate } from "@app/contracts";
+import { ScanStatusChanged } from "@app/contracts/scan/scan.status-changed";
+import { HttpService } from "@nestjs/axios";
+import { Body, Controller, Get, Inject, OnModuleInit, Param, Post, Sse } from '@nestjs/common';
+import { ConfigService } from "@nestjs/config";
+import { ClientKafka, EventPattern } from "@nestjs/microservices";
 
 @Controller('scans')
 export class ScanController implements OnModuleInit {
@@ -34,6 +34,7 @@ export class ScanController implements OnModuleInit {
 
     @Get()
     getAll() {
+        this.kafkaService.emit('scan.photo-submitted.event', { hello: 'hi' });
         return this.scanService.getAll();
     }
 
