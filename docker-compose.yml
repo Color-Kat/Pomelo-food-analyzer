@@ -26,7 +26,8 @@ services:
     volumes:
       - ./apps/web:/app/apps/web
       - ./libs:/app/libs
-      - /app/node_modules # Exclude node_modules
+      - /app/apps/web/node_modules
+      - /app/apps/web/.next
     environment:
       - NODE_ENV=development
     env_file:
@@ -51,24 +52,24 @@ services:
       - db
       - kafka
 
-#  product-analyzer:
-#    container_name: product-analyzer
-#    build:
-#      context: .
-#      dockerfile: ./apps/product-analyzer/Dockerfile.dev
-#    ports:
-#      - "${PRODUCT_ANALYZER_PORT}:${PRODUCT_ANALYZER_PORT}"
-#    volumes:
-#      - ./apps/product-analyzer:/app/apps/product-analyzer
-#      - ./libs:/app/libs
-#    environment:
-#      - NODE_ENV=development
-#      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${PRODUCT_ANALYZER_DB_NAME}?schema=public
-#    env_file:
-#      - .env
-#    depends_on:
-#      - db
-#      - kafka
+  #  product-analyzer:
+  #    container_name: product-analyzer
+  #    build:
+  #      context: .
+  #      dockerfile: ./apps/product-analyzer/Dockerfile.dev
+  #    ports:
+  #      - "${PRODUCT_ANALYZER_PORT}:${PRODUCT_ANALYZER_PORT}"
+  #    volumes:
+  #      - ./apps/product-analyzer:/app/apps/product-analyzer
+  #      - ./libs:/app/libs
+  #    environment:
+  #      - NODE_ENV=development
+  #      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${PRODUCT_ANALYZER_DB_NAME}?schema=public
+  #    env_file:
+  #      - .env
+  #    depends_on:
+  #      - db
+  #      - kafka
 
   ingredients-recognition:
     container_name: ingredients-recognition
@@ -97,35 +98,35 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-#  zookeeper:
-#    image: confluentinc/cp-zookeeper:7.4.4
-#    environment:
-#      ZOOKEEPER_TICK_TIME: 2000
-#      ZOOKEEPER_CLIENT_PORT: 22181
-#    ports:
-#      - "22181:22181"
-#    attach: false # don't show logs
-#
-#  kafka:
-#    image: confluentinc/cp-kafka:7.8.0
-#    depends_on:
-#      - zookeeper
-#    ports:
-#      - "9092:9092"
-#      - "29092:29092"
-#    environment:
-#      KAFKA_BROKER_ID: 1
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:22181
-#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-#      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
-#      KAFKA_LOG4J_ROOT_LOGLEVEL: "OFF"  # Оставляем только ошибки
-#      KAFKA_LOG4J_APPENDER_STDOUT: "OFF"
-#    volumes:
-#      - kafka-data1:/var/lib/kafka/data
-#    attach: false # don't show logs
+  #  zookeeper:
+  #    image: confluentinc/cp-zookeeper:7.4.4
+  #    environment:
+  #      ZOOKEEPER_TICK_TIME: 2000
+  #      ZOOKEEPER_CLIENT_PORT: 22181
+  #    ports:
+  #      - "22181:22181"
+  #    attach: false # don't show logs
+  #
+  #  kafka:
+  #    image: confluentinc/cp-kafka:7.8.0
+  #    depends_on:
+  #      - zookeeper
+  #    ports:
+  #      - "9092:9092"
+  #      - "29092:29092"
+  #    environment:
+  #      KAFKA_BROKER_ID: 1
+  #      KAFKA_ZOOKEEPER_CONNECT: zookeeper:22181
+  #      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+  #      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  #      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+  #      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+  #      KAFKA_LOG4J_ROOT_LOGLEVEL: "OFF"  # Оставляем только ошибки
+  #      KAFKA_LOG4J_APPENDER_STDOUT: "OFF"
+  #    volumes:
+  #      - kafka-data1:/var/lib/kafka/data
+  #    attach: false # don't show logs
 
   kafka:
     image: apache/kafka-native:4.0.0

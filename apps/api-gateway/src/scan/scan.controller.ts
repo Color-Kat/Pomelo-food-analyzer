@@ -44,26 +44,24 @@ export class ScanController implements OnModuleInit {
         return this.scanService.getOne(id);
     }
 
-    @Post()
-    async create(@Body() body: ScanCreate.Request) {
-        return this.scanService.create(body);
-    }
-
     // @Post()
-    // async create(@Req() request: Request) {
-    //     console.log(request)
-    //     // Проксируем запрос в другой микросервис
-    //     const response = await firstValueFrom(
-    //         this.httpService.post(
-    //             ScanCreate.url,
-    //             request,
-    //             // {
-    //             //     headers: request.headers, // Передаем все заголовки, включая Content-Type
-    //             //     responseType: 'json', // Указываем тип ответа, если нужен JSON
-    //             // }
-    //         )
-    //     );
-    //
-    //     return response.data;
+    // async create(@Body() body: ScanCreate.Request) {
+    //     return this.scanService.create(body);
     // }
+
+    @Post()
+    async create(@Req() request: Request) {
+        const response = await firstValueFrom(
+            this.httpService.post(
+                ScanCreate.url,
+                request,
+                {
+                    headers: request.headers as any,
+                    responseType: 'json',
+                },
+            )
+        );
+
+        return response.data;
+    }
 }

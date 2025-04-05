@@ -1,6 +1,4 @@
-import {microserviceUrls} from "@app/config";
-import {IScan, ScanStatus, ScanType} from "@app/interfaces";
-import {IsEnum, IsString} from 'class-validator';
+import {ScanStatus} from "@app/interfaces";
 
 export namespace ScanStatusChanged {
     export const topic = "scan.status-changed.event";

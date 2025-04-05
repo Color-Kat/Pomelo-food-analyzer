@@ -1,6 +1,6 @@
 import {microserviceUrls} from "@app/config";
 import {IScan, ScanType} from "@app/interfaces";
-import {IsEnum, IsString} from 'class-validator';
+import {IsEnum, IsOptional, IsString} from 'class-validator';
 
 export namespace ScanCreate {
     export const url = microserviceUrls.scan + "/scans";
@@ -11,6 +11,11 @@ export namespace ScanCreate {
 
         @IsString()
         userId: string;
+
+        // Just for documentation
+        // `photo` must be passed in FormData, but validation is in FileInterceptor
+        @IsOptional()
+        photo?: Express.Multer.File;
     }
 
     export class Response {

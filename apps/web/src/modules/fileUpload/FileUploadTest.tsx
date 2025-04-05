@@ -35,8 +35,8 @@ export const FileUploadTest: FC = () => {
 
             if (response.ok) {
                 setMessage('Фото успешно отправлено!');
-                setFile(null);
-                setPreview(null);
+                // setFile(null);
+                // setPreview(null);
             } else {
                 setMessage(`Ошибка при отправке: ${response.statusText}`);
             }
