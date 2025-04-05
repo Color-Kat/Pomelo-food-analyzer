@@ -1,8 +1,19 @@
 import {ScanCreate} from "@app/contracts";
 import {ScanGetScan} from "@app/contracts/scan/scan.get-scan";
 import {ScanGetScans} from "@app/contracts/scan/scan.get-scans";
-import {Body, Controller, Get, Param, Post} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    FileTypeValidator,
+    Get,
+    MaxFileSizeValidator,
+    Param,
+    ParseFilePipe,
+    Post,
+    UploadedFile, UseInterceptors
+} from '@nestjs/common';
 import {ScanService} from './scan.service';
+import {FileInterceptor} from "@nestjs/platform-express";
 
 @Controller('scans')
 export class ScanController {
@@ -24,7 +35,20 @@ export class ScanController {
     }
 
     @Post()
-    async create(@Body() createScanDto: ScanCreate.Request): Promise<ScanCreate.Response> {
+    @UseInterceptors(FileInterceptor('file'))
+    async create(
+        @Body() createScanDto: ScanCreate.Request,
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: 10000 }),
+                    new FileTypeValidator({ fileType: 'image/jpeg' }),
+                ],
+            }),
+        )
+        photo: Express.Multer.File,
+    ): Promise<ScanCreate.Response> {
+        console.log(photo)
         return {
             scan: await this.scanService.create(createScanDto)
         };
