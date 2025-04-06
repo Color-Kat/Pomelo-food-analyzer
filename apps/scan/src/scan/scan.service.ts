@@ -1,12 +1,12 @@
 import {ScanCreate} from "@app/contracts";
+import {ScanPhotoSubmitted} from "@app/contracts/scan/scan.photo-submitted";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
 import {ScanStatus} from "@app/interfaces";
+import {S3Service} from "@app/s3";
 import {Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {ClientKafka} from "@nestjs/microservices";
 import {ScanEntity} from "@scan/scan/scan.entity";
 import {ScanRepository} from "@scan/scan/scan.repository";
-import {ScanPhotoSubmitted} from "@app/contracts/scan/scan.photo-submitted";
-import {S3Service} from "@app/s3";
 import {firstValueFrom} from "rxjs";
 
 @Injectable()
@@ -71,6 +71,8 @@ export class ScanService {
         //     this.emitScanStatusChanged(scanEntity.id, scanEntity.status);
         // }, 1000)
 
+        // Use setTimeout to delay the emission of the event
+        // To client will be able to subscribe to SSE scan status updates.
         setTimeout(async () => {
             await firstValueFrom(this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
                 scanId: scanEntity.id,
@@ -81,7 +83,7 @@ export class ScanService {
                 scanId: scanEntity.id,
                 photoUrl: scanEntity.photoUrl,
             });
-        }, 10);
+        }, 50);
 
         return result;
     }
