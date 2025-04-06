@@ -1,4 +1,7 @@
 import {ScanCreate} from "@app/contracts";
+import {
+    IngredientsRecognitionRecognized
+} from "@app/contracts/ingredients-recognition/ingredients-recognition.recognized";
 import {ScanPhotoSubmitted} from "@app/contracts/scan/scan.photo-submitted";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
 import {ScanStatus} from "@app/interfaces";
@@ -16,16 +19,6 @@ export class ScanService {
         private readonly s3Service: S3Service,
         @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
     ) {
-    }
-
-    /**
-     * Transfer updated scan status to the client using kafka and SSE in api-gateway
-     */
-    emitScanStatusChanged(scanId: string, status: ScanStatus) {
-        this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
-            status: status,
-            scanId: scanId
-        });
     }
 
     findAll() {
@@ -48,8 +41,11 @@ export class ScanService {
             createScanDto
         );
 
-        await scanEntity.setPhoto(photo, this.s3Service);
+        // Upload file to S3 and set photo URL
+        const {url: photoUrl, filePath} = await this.s3Service.uploadFile(photo, "scans/");
+        await scanEntity.setPhoto(photoUrl);
 
+        // Save scan to db
         const result = await this.scanRepository.create(scanEntity);
         scanEntity.id = result.id;
 
@@ -76,16 +72,34 @@ export class ScanService {
         setTimeout(async () => {
             await firstValueFrom(this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
                 scanId: scanEntity.id,
-                status: ScanStatus.CREATED,
+                status: ScanStatusChanged.StatusEnum.RECOGNITION_PENDING,
             }));
 
             this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic, {
-                scanId: scanEntity.id,
+                scanId  : scanEntity.id,
+                type    : scanEntity.type,
                 photoUrl: scanEntity.photoUrl,
             });
         }, 50);
 
         return result;
+    }
+
+    async handleIngredientsRecognized(data: IngredientsRecognitionRecognized.Payload) {
+        const scan = await this.scanRepository.getOne(data.scanId);
+        if (!scan) throw new NotFoundException(`Скан с id=${data.scanId} не найден`);
+
+        const scanEntity = new ScanEntity(scan);
+
+        scanEntity.setStatus(ScanStatus.RECOGNIZED);
+        scanEntity.setIngredients(data.ingredients);
+
+        await this.scanRepository.update(scanEntity);
+
+        this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
+            scanId: scan.id,
+            status: ScanStatusChanged.StatusEnum.ANALYSIS_PENDING,
+        });
     }
 
     // update(id: number, updateScanDto: UpdateScanDto) {

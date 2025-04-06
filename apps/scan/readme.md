@@ -71,10 +71,9 @@ This microservice will manage scans and its status.
 
 #### Scan Statuses in DB
 
-* `RECOGNITION_PENDING`: Awaiting text recognition.
+* `CREATED`: Awaiting text recognition.
 * `RECOGNITION_FAILED`: Text recognition failed.
 * `RECOGNIZED`: Text recognition successful.
-* `ANALYSIS_PENDING`: Awaiting product analysis.
 * `ANALYSIS_FAILED`: Product analysis failed.
 * `COMPLETED`: Analysis completed successfully.
 

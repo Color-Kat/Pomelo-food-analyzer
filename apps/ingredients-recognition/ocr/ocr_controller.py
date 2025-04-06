@@ -23,22 +23,24 @@ class OCRController(BaseController):
         print(f"Received scan.photo-submitted.event: {data}")
         scan_id = data['scanId']
         photo_url = data['photoUrl']
+        type = data['type'] # food or cosmetic
         
         # Recognition is started
         await self.kafka_connection.send(
             "scan.status-changed.event",
             {
                 "scanId": scan_id,
-                "status": "RECOGNIZING"
+                "status": "recognizing"
             }
         )
         
         try:
-            recognition_result = await OCRService().extract_text(photo_url)
+            recognition_result = await OCRService().extract_text(photo_url, type)
+            recognition_result["scanId"] = scan_id
             
             # Send recognition result
             await self.kafka_connection.send(
-                "ingredients-recognition.ingredients-recognized.event",
+                "ingredients-recognition.recognized.event",
                 recognition_result
             )
             
@@ -47,7 +49,7 @@ class OCRController(BaseController):
                 "scan.status-changed.event",
                 {
                     "scanId": scan_id,
-                    "status": "RECOGNIZED"
+                    "status": "recognized"
                 }
             )
             
@@ -60,6 +62,6 @@ class OCRController(BaseController):
                 "scan.status-changed.event",
                 {
                     "scanId": scan_id,
-                    "status": "RECOGNITION_FAILED"
+                    "status": "recognitionFailed"
                 }
             )

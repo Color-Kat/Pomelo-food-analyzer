@@ -1,16 +1,24 @@
 import {ScanCreate} from "@app/contracts";
+import {
+    IngredientsRecognitionRecognized
+} from "@app/contracts/ingredients-recognition/ingredients-recognition.recognized";
 import {ScanGetScan} from "@app/contracts/scan/scan.get-scan";
 import {ScanGetScans} from "@app/contracts/scan/scan.get-scans";
 import {
     Body,
-    Controller, FileTypeValidator,
-    Get, MaxFileSizeValidator,
-    Param, ParseFilePipe,
+    Controller,
+    FileTypeValidator,
+    Get,
+    MaxFileSizeValidator,
+    Param,
+    ParseFilePipe,
     Post,
-    UploadedFile, UseInterceptors
+    UploadedFile,
+    UseInterceptors
 } from '@nestjs/common';
-import {ScanService} from './scan.service';
+import {EventPattern} from "@nestjs/microservices";
 import {FileInterceptor} from "@nestjs/platform-express";
+import {ScanService} from './scan.service';
 
 @Controller('scans')
 export class ScanController {
@@ -50,13 +58,10 @@ export class ScanController {
         };
     }
 
-    // @EventPattern()
-
-
-
-
-
-
+    @EventPattern(IngredientsRecognitionRecognized.topic)
+    handleIngredientsRecognized(data: IngredientsRecognitionRecognized.Payload) {
+        this.scanService.handleIngredientsRecognized(data);
+    }
 
     // @Patch(':id')
     // update(@Param('id') id: string, @Body() updateScanDto: UpdateScanDto) {

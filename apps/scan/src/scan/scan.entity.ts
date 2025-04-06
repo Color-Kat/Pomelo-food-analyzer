@@ -1,5 +1,4 @@
 import {IScan, ScanStatus, ScanType} from "@app/interfaces";
-import {S3Service} from "@app/s3";
 
 export class ScanEntity implements IScan {
     id: string;
@@ -31,14 +30,11 @@ export class ScanEntity implements IScan {
         return this;
     }
 
-    /**
-     * Upload photo to S3 storage and set photoUrl.
-     * @param photo
-     * @param s3Service
-     */
-    public async setPhoto(photo: Express.Multer.File, s3Service: S3Service) {
-        const {url, filePath} = await s3Service.uploadFile(photo, "scans/");
-        console.log(url, filePath);
+    public setPhoto(url: string) {
         this.photoUrl = url;
+    }
+
+    public setIngredients(ingredients: string[]) {
+        this.ingredients = ingredients;
     }
 }
