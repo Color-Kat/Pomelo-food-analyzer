@@ -9,6 +9,7 @@ git clone https://github.com/Color-Kat/Pomelo-food-analyzer.git ./Pomelo-food-an
 ```
 
 2. Copy `.env.example` to `.env` and fill in the necessary environment variables.
+You can request secret keys from @ColorKat.
 
 3. **Development mode:**
 ```bash

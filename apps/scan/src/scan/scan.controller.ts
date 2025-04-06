@@ -45,9 +45,8 @@ export class ScanController {
         )
         photo: Express.Multer.File,
     ): Promise<ScanCreate.Response> {
-        console.log(photo, createScanDto)
         return {
-            scan: await this.scanService.create(createScanDto)
+            scan: await this.scanService.create(createScanDto, photo)
         };
     }
 

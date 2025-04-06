@@ -64,6 +64,15 @@
         "tsConfigPath": "apps/product-analyzer/tsconfig.app.json"
       }
     },
+    "s3": {
+      "type": "library",
+      "root": "libs/s3",
+      "entryFile": "index",
+      "sourceRoot": "libs/s3/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/s3/tsconfig.lib.json"
+      }
+    },
     "scan": {
       "type": "application",
       "root": "apps/scan",

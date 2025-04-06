@@ -5,6 +5,8 @@ import {KafkaModule} from "@app/kafka";
 import { ScanModule } from './scan/scan.module';
 import {ConfigModule} from "@app/config";
 import {HttpModule} from "@nestjs/axios";
+import { StorageController } from './storage/storage.controller';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
     imports: [
@@ -15,6 +17,7 @@ import {HttpModule} from "@nestjs/axios";
         }),
 
         ScanModule,
+        StorageModule,
     ],
     controllers: [AppController],
     providers: [AppService],

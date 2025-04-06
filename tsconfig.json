@@ -18,18 +18,9 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      // Apps
-      "@web/*": [
-        "apps/web/src/*"
-      ],
-      "@scan/*": [
-        "apps/scan/src/*"
-      ],
       "@api-gateway/*": [
         "apps/api-gateway/src/*"
       ],
-
-      // Libs
       "@app/config": [
         "libs/config/src"
       ],
@@ -53,6 +44,18 @@
       ],
       "@app/kafka/*": [
         "libs/kafka/src/*"
+      ],
+      "@app/s3": [
+        "libs/s3/src"
+      ],
+      "@app/s3/*": [
+        "libs/s3/src/*"
+      ],
+      "@scan/*": [
+        "apps/scan/src/*"
+      ],
+      "@web/*": [
+        "apps/web/src/*"
       ]
     }
   }

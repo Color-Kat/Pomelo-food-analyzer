@@ -15,6 +15,13 @@ import * as Joi from 'joi';
                 PRODUCT_ANALYZER_DB_NAME: Joi.string().required(),
                 ACCOUNT_DB_NAME: Joi.string().required(),
 
+                // S3 settings
+                S3_ENDPOINT: Joi.string().uri().required(),
+                S3_REGION: Joi.string().required(),
+                S3_ACCESS_KEY: Joi.string().required(),
+                S3_SECRET_KEY: Joi.string().required(),
+                S3_BUCKET_NAME: Joi.string().required(),
+
                 // Ports and URLs of all microservices
                 WEB_HOST: Joi.string().uri().required(),
                 WEB_PORT: Joi.number().port().required(),

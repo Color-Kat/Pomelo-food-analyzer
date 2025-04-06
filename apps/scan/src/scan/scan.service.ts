@@ -37,15 +37,24 @@ export class ScanService {
         return scan;
     }
 
-    async create(createScanDto: ScanCreate.Request) {
+    async create(
+        createScanDto: ScanCreate.Request,
+        photo: Express.Multer.File
+    ) {
         const scanEntity = new ScanEntity(
             createScanDto
         );
 
-        scanEntity.photoUrl = "https://cdn-irec.r-99.com/sites/default/files/imagecache/copyright/user-images/81829/x5R8ArElB9DgNb8Viiw.jpg";
+        scanEntity.setPhoto(photo);
 
-        const result = await this.scanRepository.create(scanEntity);
-        scanEntity.id = result.id;
+        // scanEntity.photoUrl = "https://cdn-irec.r-99.com/sites/default/files/imagecache/copyright/user-images/81829/x5R8ArElB9DgNb8Viiw.jpg";
+
+        console.log(scanEntity)
+
+        return {} as any;
+
+        // const result = await this.scanRepository.create(scanEntity);
+        // scanEntity.id = result.id;
 
         // Mock status change
         // setInterval(() => {
@@ -64,12 +73,12 @@ export class ScanService {
         //     this.emitScanStatusChanged(scanEntity.id, scanEntity.status);
         // }, 1000)
 
-        this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic, {
-            scanId: scanEntity.id,
-            photoUrl: scanEntity.photoUrl,
-        })
-
-        return result;
+        // this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic, {
+        //     scanId: scanEntity.id,
+        //     photoUrl: scanEntity.photoUrl,
+        // })
+        //
+        // return result;
     }
 
     // update(id: number, updateScanDto: UpdateScanDto) {

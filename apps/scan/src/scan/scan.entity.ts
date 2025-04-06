@@ -29,4 +29,8 @@ export class ScanEntity implements IScan {
         this.status = status;
         return this;
     }
+
+    public setPhoto(photo: Express.Multer.File) {
+        
+    }
 }
