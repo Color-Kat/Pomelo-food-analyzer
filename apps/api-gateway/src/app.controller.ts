@@ -1,7 +1,7 @@
 import {PingContract} from "@app/kafka";
 import {Controller, Get, Inject} from '@nestjs/common';
 import {ConfigService} from "@nestjs/config";
-import {ClientKafka, MessagePattern} from "@nestjs/microservices";
+import {ClientKafka, EventPattern, MessagePattern} from "@nestjs/microservices";
 import {AppService} from './app.service';
 import {ScanPhotoSubmitted} from "@app/contracts/scan/scan.photo-submitted";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
@@ -42,12 +42,12 @@ export class AppController {
         })
     }
 
-    @MessagePattern(ScanStatusChanged.topic)
+    @EventPattern(ScanStatusChanged.topic)
     async pytestStatuses(data: ScanStatusChanged.Payload) {
         console.log("Pytest, received data in api-gateway: ", data)
     }
 
-    @MessagePattern(IngredientsRecognitionIngredientsRecognized.topic)
+    @EventPattern(IngredientsRecognitionIngredientsRecognized.topic)
     async pytestResult(data: IngredientsRecognitionIngredientsRecognized.Payload) {
         console.log("Pytest, received data in api-gateway: ", data)
     }

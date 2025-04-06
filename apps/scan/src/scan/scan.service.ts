@@ -6,11 +6,14 @@ import {ClientKafka} from "@nestjs/microservices";
 import {ScanEntity} from "@scan/scan/scan.entity";
 import {ScanRepository} from "@scan/scan/scan.repository";
 import {ScanPhotoSubmitted} from "@app/contracts/scan/scan.photo-submitted";
+import {S3Service} from "@app/s3";
+import {firstValueFrom} from "rxjs";
 
 @Injectable()
 export class ScanService {
     constructor(
         private readonly scanRepository: ScanRepository,
+        private readonly s3Service: S3Service,
         @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
     ) {
     }
@@ -45,16 +48,11 @@ export class ScanService {
             createScanDto
         );
 
-        scanEntity.setPhoto(photo);
+        await scanEntity.setPhoto(photo, this.s3Service);
 
-        // scanEntity.photoUrl = "https://cdn-irec.r-99.com/sites/default/files/imagecache/copyright/user-images/81829/x5R8ArElB9DgNb8Viiw.jpg";
+        const result = await this.scanRepository.create(scanEntity);
+        scanEntity.id = result.id;
 
-        console.log(scanEntity)
-
-        return {} as any;
-
-        // const result = await this.scanRepository.create(scanEntity);
-        // scanEntity.id = result.id;
 
         // Mock status change
         // setInterval(() => {
@@ -73,12 +71,19 @@ export class ScanService {
         //     this.emitScanStatusChanged(scanEntity.id, scanEntity.status);
         // }, 1000)
 
-        // this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic, {
-        //     scanId: scanEntity.id,
-        //     photoUrl: scanEntity.photoUrl,
-        // })
-        //
-        // return result;
+        setTimeout(async () => {
+            await firstValueFrom(this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
+                scanId: scanEntity.id,
+                status: ScanStatus.CREATED,
+            }));
+
+            this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic, {
+                scanId: scanEntity.id,
+                photoUrl: scanEntity.photoUrl,
+            });
+        }, 10);
+
+        return result;
     }
 
     // update(id: number, updateScanDto: UpdateScanDto) {

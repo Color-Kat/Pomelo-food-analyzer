@@ -2,6 +2,7 @@ import {Injectable, NotFoundException, StreamableFile} from '@nestjs/common';
 import {ConfigService} from '@nestjs/config';
 import {S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand} from '@aws-sdk/client-s3';
 import {v4 as uuidv4} from 'uuid';
+import {microserviceUrls} from "@app/config";
 
 @Injectable()
 export class S3Service {
@@ -10,8 +11,7 @@ export class S3Service {
 
     constructor(private configService: ConfigService) {
         this.s3Client = new S3Client({
-            endpoint: 'https://dev-minio-ck-api.lad-academy.ru:443',
-            // endpoint: this.configService.get<string>('S3_ENDPOINT', ''),
+            endpoint: this.configService.get<string>('S3_ENDPOINT', ''),
             region: this.configService.get<string>('S3_REGION', 'auto'),
             credentials: {
                 accessKeyId: this.configService.get<string>('S3_ACCESS_KEY', ''),
@@ -44,7 +44,8 @@ export class S3Service {
 
         await this.s3Client.send(command);
 
-        const url = `${this.s3Client.config.endpoint}/${this.bucketName}/${filePath}`;
+        // const url = `${this.s3Client.config.bucketEndpoint}/${this.bucketName}/${filePath}`;
+        const url = `${microserviceUrls.apiGateway}/storage/${filePath}`;
         return {filePath, url};
     }
 
@@ -65,7 +66,7 @@ export class S3Service {
     };
 
     /**
-     * Get a file from S3 bucket.
+     * Get a file from S3 bucket like bytes array.
      * @param filePath
      */
     // async getFile(filePath: string): Promise<Buffer> {
