@@ -31,31 +31,31 @@ This microservice will manage scans and its status.
     - Published Kafka Topics:
         * `scan.status-changed.event` (with new status `RECOGNIZING`).
         * `scan.status-changed.event` (with new status `RECOGNITION_FAILED` or `RECOGNIZED`).
-        * `ingredients-recognition.text-recognized.event` (with recognized text or error).
+        * `ingredients-recognition.recognized.event` (with recognized ingredients list).
 
 3.  **Stage: Recognized text saving**
-    - Trigger Event: `ingredients-recognition.text-recognized.event`.
+    - Trigger Event: `ingredients-recognition.recognized.event`.
     - Actions:
         * The Scan microservice saves the recognized text to the database.
         * If recognition fails, the scan status is updated to `RECOGNITION_FAILED`.
         * If recognition is successful, the scan status is updated to `RECOGNIZED`.
     - Published Kafka Topics:
-        * `scan.ready-for-analysis.event` (with recognized text) (for orchestration)
+        * `scan.ingredients-changed.event` (with recognized text) (for orchestration)
 
 4. **Stage: Product Analysis**
-    - Trigger Event: `ingredients.text-recognized.event` (for choreography).
-    - Trigger Event: `scan.ready-for-analysis.event` (for orchestration).
+    - [X] Trigger Event: `ingredients.text-recognized.event` (for choreography).
+    - Trigger Event: `scan.ingredients-changed.event` (for orchestration).
     - Actions:
         * Emit status `ANALYZING`.
         * Initiates the analysis of the recognized text to identify products.
         * If the analysis fails, emit scan status `ANALYSIS_FAILED`.
         * If the analysis is successful, emit scan status `ANALYZED`.
     - Published Kafka Topics:
-        * `product-analyzer.analysis-completed.event` (with analysis results or error).
-        * `scan.status-changed.event` (with new status `ANALYSIS_FAILED`).
+        * `product-analyzer.analysed.event` (with analysis results or error).
+        * `scan.status-changed.event` (with new status `ANALYZING`, `ANALYSIS_FAILED`).
 
 5. **Stage: Analysis result saving**
-    - Trigger Event: `product-analyzer.analysis-completed.event`.
+    - Trigger Event: `product-analyzer.analysed.event`.
     - Actions:
         * The Scan microservice saves the analysis result to the database.
         * If analysis fails, the scan status is updated to `ANALIZIS_FAILED`.

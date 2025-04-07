@@ -62,6 +62,6 @@ class OCRController(BaseController):
                 "scan.status-changed.event",
                 {
                     "scanId": scan_id,
-                    "status": "recognitionFailed"
+                    "status": "recognition_failed"
                 }
             )
