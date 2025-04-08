@@ -38,7 +38,7 @@ export class ScanService {
             });
 
             // Close the connection if the scan is completed
-            if (status === ScanStatus.COMPLETED) {
+            if (status === ScanStatusChanged.StatusEnum.COMPLETED) {
                 clientSubject.complete();
             }
         }

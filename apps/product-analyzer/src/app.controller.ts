@@ -1,11 +1,19 @@
-import {Controller, Get} from '@nestjs/common';
-import {MessagePattern} from "@nestjs/microservices";
 import {PingContract} from "@app/kafka";
+import {Controller, Get, Inject} from '@nestjs/common';
+import {ConfigService} from "@nestjs/config";
+import {ClientKafka, MessagePattern} from "@nestjs/microservices";
+import {AppService} from './app.service';
 
 @Controller()
 export class AppController {
+    constructor(
+        private readonly appService: AppService,
+        @Inject('KAFKA_SERVICE') private readonly kafkaService: ClientKafka,
+        private readonly configService: ConfigService,
+    ) {
+    }
 
-    @MessagePattern('product-analyzer' + PingContract.topic)
+    @MessagePattern(PingContract.getTopic('scan'))
     async handlePing(data: PingContract.Request) {
         return {
             status: 'ok',
@@ -16,6 +24,6 @@ export class AppController {
 
     @Get()
     getHello(): string {
-        return "Hi there!";
+        return this.appService.getHello();
     }
 }

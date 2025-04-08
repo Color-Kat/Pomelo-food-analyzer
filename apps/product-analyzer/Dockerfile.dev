@@ -9,4 +9,7 @@ RUN npm install
 COPY . .
 
 # Run in development mode
-CMD ["npm", "run", "start:dev", "product-analyzer"]
+CMD cd apps/scan && \
+    npx prisma generate && \
+    npx prisma migrate deploy && \
+    npm run start:dev product-analyzer

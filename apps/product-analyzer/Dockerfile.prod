@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build product-analyzer # Will create folder in ./dist/apps/product-analyzer
+RUN npm run build product-analyzer # Will create folder in ./dist/apps/scan
 
 FROM node:23-alpine
 
@@ -16,8 +16,16 @@ WORKDIR /app
 
 COPY package.json ./
 
-RUN npm install --only=prod
+RUN npm install --omit=dev && \
+    npm install prisma @prisma/client
 
+# Copy the built application and Prisma schema from the build stage
 COPY --from=build /app/dist/apps/product-analyzer ./dist
+COPY --from=build /app/apps/scan/prisma ./prisma
 
-CMD ["node", "./dist/main.js"]
+# Run Prisma generation, migrations, and start the app at runtime
+CMD npx prisma generate && \
+    npx prisma migrate deploy && \
+    node ./dist/main.js
+
+#CMD ["node", "./dist/main.js"]
