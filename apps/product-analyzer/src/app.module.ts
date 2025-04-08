@@ -1,11 +1,11 @@
+import {CacheModule} from "@app/cache";
 import {ConfigModule} from "@app/config";
 import {KafkaModule} from "@app/kafka";
 import {Module} from '@nestjs/common';
-import {DatabaseModule} from "@scan/database/database.module";
+import {DatabaseModule} from "@product-analyzer/database/database.module";
+import {AnalysisModule} from './analysis/analysis.module';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
-import {CacheModule} from "@app/cache";
-import { AnalysisModule } from './analysis/analysis.module';
 
 @Module({
     imports: [
