@@ -1,9 +1,9 @@
-import {Controller, Get, Inject} from '@nestjs/common';
-import {AnalysisService} from './analysis.service';
 import {CACHE_MANAGER} from "@nestjs/cache-manager";
+import {Controller, Get, Inject} from '@nestjs/common';
 import {Cache} from "cache-manager";
+import {AnalysisService} from './analysis.service';
 
-@Controller()
+@Controller("analysis")
 export class AnalysisController {
     constructor(
         private readonly analysisService: AnalysisService,
@@ -13,6 +13,13 @@ export class AnalysisController {
 
     @Get('cache')
     async getCache() {
-        return this.cacheManager.wrap()
+        return this.cacheManager.wrap(
+            "test",
+            async () => {
+                console.log("This is not cached value")
+                return "test";
+            },
+            {ttl: 10000,}
+        )
     }
 }

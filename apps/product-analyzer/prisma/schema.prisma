@@ -15,12 +15,17 @@ datasource db {
 }
 
 model Additive {
-  id       String @id @default(autoincrement())
-  name     String @unique()
-  info     String
-  origin   String
-  category String
-  danger   Int
-  benefits String
-  harm     String
+  id            Int      @id @default(autoincrement())
+  code          String   @unique
+  name          String
+  danger        Int      @map("danger")
+  origin        String[]
+  category      String[]
+  synonyms      String[]
+  description   String
+  healthHarm    String   @map("health_harm")
+  healthBenefit String   @map("health_benefit")
+  usage         String
+  legislation   String?
+  referenceUrl  String   @map("reference_url")
 }

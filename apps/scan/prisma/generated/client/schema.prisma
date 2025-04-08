@@ -19,9 +19,9 @@ model Scan {
   type        String
   status      String
   name        String?
-  photoUrl    String?
+  photoUrl    String?  @map("photo_url")
   ingredients String[]
-  userId      String
-  updatedAt   DateTime @updatedAt
-  createdAt   DateTime @default(now())
+  userId      String   @map("user_id")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdAt   DateTime @default(now()) @map("created_at")
 }
