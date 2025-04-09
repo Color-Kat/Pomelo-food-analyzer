@@ -19,7 +19,7 @@ export class AdditiveRepository implements OnModuleInit {
         // Save the ENTIRE additives table to the in memory cache
         await this.getAll();
 
-        // await this.cacheManager.del("additives");
+        await this.cacheManager.del("additives");
     }
 
     public async getAll(): Promise<AdditivesType> {

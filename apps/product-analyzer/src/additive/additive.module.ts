@@ -1,11 +1,11 @@
 import {Module} from '@nestjs/common';
 import {AdditiveService} from './additive.service';
 import {AdditiveController} from './additive.controller';
-import {AnalysisRepository} from "@product-analyzer/analysis/analysis.repository";
+import {AdditiveRepository} from "@product-analyzer/additive/additive.repository";
 
 @Module({
     controllers: [AdditiveController],
-    providers: [AdditiveService, AnalysisRepository],
+    providers: [AdditiveService, AdditiveRepository],
 })
 export class AdditiveModule {
 }
