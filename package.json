@@ -101,7 +101,8 @@
       "^@app/contracts(|/.*)$": "<rootDir>/libs/contracts/src/$1",
       "^@app/interfaces(|/.*)$": "<rootDir>/libs/interfaces/src/$1",
       "^@app/kafka(|/.*)$": "<rootDir>/libs/kafka/src/$1",
-      "^@app/s3(|/.*)$": "<rootDir>/libs/s3/src/$1"
+      "^@app/s3(|/.*)$": "<rootDir>/libs/s3/src/$1",
+      "^@app/utils(|/.*)$": "<rootDir>/libs/utils/src/$1"
     }
   }
 }

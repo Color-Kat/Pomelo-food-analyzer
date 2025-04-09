@@ -6,6 +6,7 @@ import {DatabaseModule} from "@product-analyzer/database/database.module";
 import {AnalysisModule} from './analysis/analysis.module';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
+import {AdditiveModule} from "@product-analyzer/additive/additive.module";
 
 @Module({
     imports: [
@@ -13,7 +14,9 @@ import {AppService} from './app.service';
         ConfigModule,
         DatabaseModule,
         CacheModule,
+
         AnalysisModule,
+        AdditiveModule
     ],
     controllers: [AppController],
     providers: [AppService],

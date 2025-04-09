@@ -12,7 +12,7 @@ export class ScanRepository {
         return this.prismaService.scan.findMany() as Promise<IScan[]>;
     }
 
-    async getOne(id: string) {
+    async findOne(id: string) {
         return this.prismaService.scan.findUnique({
             where: {
                 id

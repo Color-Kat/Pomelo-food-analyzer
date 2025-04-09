@@ -18,6 +18,9 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@api-gateway/*": [
+        "apps/api-gateway/src/*"
+      ],
       "@app/cache": [
         "libs/cache/src"
       ],
@@ -54,15 +57,17 @@
       "@app/s3/*": [
         "libs/s3/src/*"
       ],
-
-      "@api-gateway/*": [
-        "apps/api-gateway/src/*"
+      "@app/utils": [
+        "libs/utils/src"
       ],
-      "@scan/*": [
-        "apps/scan/src/*"
+      "@app/utils/*": [
+        "libs/utils/src/*"
       ],
       "@product-analyzer/*": [
         "apps/product-analyzer/src/*"
+      ],
+      "@scan/*": [
+        "apps/scan/src/*"
       ],
       "@web/*": [
         "apps/web/src/*"

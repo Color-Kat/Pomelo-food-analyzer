@@ -1,4 +1,3 @@
-
 export interface IngredientDetails {
     ingredient: {};
     allergens: string[];

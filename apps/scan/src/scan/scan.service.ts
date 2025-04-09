@@ -26,7 +26,7 @@ export class ScanService {
     }
 
     async findOne(id: string) {
-        const scan = await this.scanRepository.getOne(id);
+        const scan = await this.scanRepository.findOne(id);
         if (!scan)
             throw new NotFoundException(`Скан с id=${id} не найден`);
 
@@ -86,7 +86,7 @@ export class ScanService {
     }
 
     async handleIngredientsRecognized(data: IngredientsRecognitionRecognized.Payload) {
-        const scan = await this.scanRepository.getOne(data.scanId);
+        const scan = await this.scanRepository.findOne(data.scanId);
         if (!scan) throw new NotFoundException(`Скан с id=${data.scanId} не найден`);
 
         const scanEntity = new ScanEntity(scan);

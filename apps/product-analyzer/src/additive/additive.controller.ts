@@ -1,14 +1,12 @@
 import {CACHE_MANAGER} from "@nestjs/cache-manager";
-import {Controller, Get, Inject} from '@nestjs/common';
-import {PrismaService} from "@product-analyzer/database/prisma.service";
+import {Controller, Get, Inject, Param} from '@nestjs/common';
 import {Cache} from "cache-manager";
-import {AnalysisService} from './analysis.service';
+import {AdditiveService} from './additive.service';
 
-@Controller("analysis")
-export class AnalysisController {
+@Controller("additives")
+export class AdditiveController {
     constructor(
-        private readonly analysisService: AnalysisService,
-        private readonly prismaService: PrismaService,
+        private readonly additiveService: AdditiveService,
         @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) {
     }
@@ -35,6 +33,11 @@ export class AnalysisController {
 
     @Get('')
     async getAll() {
-        return this.analysisService.getAll();
+        return this.additiveService.getAll();
+    }
+
+    @Get(':code')
+    async getByCode(@Param('code') code: string) {
+        return this.additiveService.getByCode(code);
     }
 }
