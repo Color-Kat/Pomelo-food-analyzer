@@ -38,6 +38,7 @@ export class AdditiveController {
 
     @Get(':code')
     async getByCode(@Param('code') code: string) {
-        return this.additiveService.getByCode(code);
+        const result = await this.additiveService.getByCode(code);
+        return result;
     }
 }
