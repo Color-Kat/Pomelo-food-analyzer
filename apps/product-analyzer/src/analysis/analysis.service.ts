@@ -1,19 +1,29 @@
-import {CACHE_MANAGER} from "@nestjs/cache-manager";
-import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
-import {Cache} from "cache-manager";
-import {PrismaService} from "../database/prisma.service";
-import {AnalysisRepository} from "@product-analyzer/analysis/analysis.repository";
+import {BadRequestException, Inject, Injectable} from '@nestjs/common';
+import {ScanType} from "@app/interfaces";
+import {IAnalyzerStrategy} from "@product-analyzer/analysis/strategies/analyzer-strategy.interface";
+import {FoodAnalyzerStrategy} from "@product-analyzer/analysis/strategies/food-analyzer.strategy";
+import {CosmeticAnalyzerStrategy} from "@product-analyzer/analysis/strategies/cosmetic-analyzer.strategy";
+import {ScanIngredientsChanged} from "@app/contracts/scan/scan.ingredients-changed";
 
 @Injectable()
 export class AnalysisService {
+    private strategies: Map<ScanType, IAnalyzerStrategy>;
+
     constructor(
-        @Inject(CACHE_MANAGER) private cacheManager: Cache,
-        private readonly analysisRepository: AnalysisRepository,
+        @Inject(FoodAnalyzerStrategy) foodStrategy: FoodAnalyzerStrategy,
+        @Inject(CosmeticAnalyzerStrategy) cosmeticStrategy: CosmeticAnalyzerStrategy,
     ) {
+        this.strategies = new Map([
+            [ScanType.FOOD, foodStrategy],
+            [ScanType.COSMETIC, cosmeticStrategy],
+        ]);
     }
 
-    public getAll() {
-        return 'ok';
-        // return this.analysisRepository.getAll();
+    handleScan(data: ScanIngredientsChanged.Payload) {
+        const strategy = this.strategies.get(data.type);
+        if (!strategy) {
+            throw new BadRequestException('Unknown scan type, only FOOD and COSMETIC are supported');
+        }
+        strategy.analyze(data);
     }
 }

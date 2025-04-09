@@ -11,6 +11,7 @@ import {ClientKafka} from "@nestjs/microservices";
 import {ScanEntity} from "@scan/scan/scan.entity";
 import {ScanRepository} from "@scan/scan/scan.repository";
 import {firstValueFrom} from "rxjs";
+import {ScanIngredientsChanged} from "@app/contracts/scan/scan.ingredients-changed";
 
 @Injectable()
 export class ScanService {
@@ -99,6 +100,12 @@ export class ScanService {
         this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
             scanId: scan.id,
             status: ScanStatusChanged.StatusEnum.ANALYSIS_PENDING,
+        });
+
+        this.kafkaService.emit<void, ScanIngredientsChanged.Payload>(ScanIngredientsChanged.topic, {
+            scanId: scan.id,
+            type: scan.type,
+            ingredients: scan.ingredients
         });
     }
 
