@@ -11,6 +11,7 @@ import {ClientKafka} from "@nestjs/microservices";
 import {ScanEntity} from "@scan/scan/scan.entity";
 import {ScanRepository} from "@scan/scan/scan.repository";
 import {firstValueFrom} from "rxjs";
+import {ScanIngredientsChanged} from "@app/contracts/scan/scan.ingredients-changed";
 
 @Injectable()
 export class ScanService {
@@ -26,7 +27,7 @@ export class ScanService {
     }
 
     async findOne(id: string) {
-        const scan = await this.scanRepository.getOne(id);
+        const scan = await this.scanRepository.findOne(id);
         if (!scan)
             throw new NotFoundException(`Скан с id=${id} не найден`);
 
@@ -86,7 +87,7 @@ export class ScanService {
     }
 
     async handleIngredientsRecognized(data: IngredientsRecognitionRecognized.Payload) {
-        const scan = await this.scanRepository.getOne(data.scanId);
+        const scan = await this.scanRepository.findOne(data.scanId);
         if (!scan) throw new NotFoundException(`Скан с id=${data.scanId} не найден`);
 
         const scanEntity = new ScanEntity(scan);
@@ -99,6 +100,12 @@ export class ScanService {
         this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
             scanId: scan.id,
             status: ScanStatusChanged.StatusEnum.ANALYSIS_PENDING,
+        });
+
+        this.kafkaService.emit<void, ScanIngredientsChanged.Payload>(ScanIngredientsChanged.topic, {
+            scanId: scan.id,
+            type: scan.type,
+            ingredients: scan.ingredients
         });
     }
 

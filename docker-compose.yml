@@ -109,6 +109,7 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
+    restart: always
 
   kafka:
     image: apache/kafka-native:4.0.0

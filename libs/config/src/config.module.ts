@@ -38,6 +38,9 @@ import * as Joi from 'joi';
 
                 // Kafka
                 KAFKA_BROKER: Joi.string().required(),
+
+                // Redis
+                REDIS_URL: Joi.string().uri().required(),
             }),
             validationOptions: {
                 abortEarly: false, // Показывать все ошибки валидации, а не первую

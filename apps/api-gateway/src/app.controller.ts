@@ -9,6 +9,7 @@ import {Controller, Get, Inject} from '@nestjs/common';
 import {ConfigService} from "@nestjs/config";
 import {ClientKafka, EventPattern, MessagePattern} from "@nestjs/microservices";
 import {AppService} from './app.service';
+import {ScanType} from "@app/interfaces";
 
 @Controller()
 export class AppController {

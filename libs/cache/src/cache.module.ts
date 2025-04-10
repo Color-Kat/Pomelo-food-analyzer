@@ -1,11 +1,12 @@
 import {ConfigModule} from "@app/config";
 import {createKeyv} from "@keyv/redis";
 import {CacheModule as NestCacheModule} from "@nestjs/cache-manager";
-import {Module} from "@nestjs/common";
+import {Global, Module} from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {CacheableMemory} from 'cacheable';
 import Keyv from "keyv";
 
+@Global()
 @Module({
     imports: [
         NestCacheModule.registerAsync({

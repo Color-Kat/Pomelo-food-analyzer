@@ -63,6 +63,12 @@
       "@app/s3/*": [
         "libs/s3/src/*"
       ],
+      "@app/utils": [
+        "libs/utils/src"
+      ],
+      "@app/utils/*": [
+        "libs/utils/src/*"
+      ],
       "@product-analyzer/*": [
         "apps/product-analyzer/src/*"
       ],
