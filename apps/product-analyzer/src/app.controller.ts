@@ -12,8 +12,7 @@ export class AppController {
         private readonly configService: ConfigService,
     ) {
     }
-
-    @MessagePattern(PingContract.getTopic('scan'))
+    @MessagePattern(PingContract.getTopic('product-analyzer'))
     async handlePing(data: PingContract.Request) {
         return {
             status: 'ok',

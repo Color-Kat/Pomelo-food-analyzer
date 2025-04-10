@@ -9,7 +9,6 @@ import {Controller, Get, Inject} from '@nestjs/common';
 import {ConfigService} from "@nestjs/config";
 import {ClientKafka, EventPattern, MessagePattern} from "@nestjs/microservices";
 import {AppService} from './app.service';
-import {ScanType} from "@app/interfaces";
 
 @Controller()
 export class AppController {
@@ -24,8 +23,8 @@ export class AppController {
     @MessagePattern(PingContract.getTopic('api-gateway'))
     async handlePing(data: PingContract.Request) {
         return {
-            status: 'ok',
-            service: data.serviceName,
+            status     : 'ok',
+            service    : data.serviceName,
             requestTime: Date.now() - data.startTime + 'ms'
         };
     }
@@ -38,9 +37,9 @@ export class AppController {
 
     @Get("pytest")
     pytest() {
-        this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic,{
-            type: ScanType.FOOD,
-            scanId: '123',
+        this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic, {
+            type    : ScanType.FOOD,
+            scanId  : '123',
             photoUrl: 'https://cdn-irec.r-99.com/sites/default/files/imagecache/copyright/user-images/81829/x5R8ArElB9DgNb8Viiw.jpg'
         })
     }

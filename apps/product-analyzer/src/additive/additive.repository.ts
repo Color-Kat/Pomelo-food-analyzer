@@ -1,9 +1,9 @@
+import {AdditivesType} from "@app/interfaces";
+import {slug} from "@app/utils";
 import {CACHE_MANAGER} from "@nestjs/cache-manager";
 import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
 import {Cache} from "cache-manager";
 import {PrismaService} from "../database/prisma.service";
-import {AdditivesType, IAdditive} from "@app/interfaces";
-import {slug} from "@app/utils";
 
 @Injectable()
 export class AdditiveRepository implements OnModuleInit {
