@@ -64,6 +64,15 @@
         "tsConfigPath": "libs/kafka/tsconfig.lib.json"
       }
     },
+    "metrics": {
+      "type": "library",
+      "root": "libs/metrics",
+      "entryFile": "index",
+      "sourceRoot": "libs/metrics/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/metrics/tsconfig.lib.json"
+      }
+    },
     "product-analyzer": {
       "type": "application",
       "root": "apps/product-analyzer",

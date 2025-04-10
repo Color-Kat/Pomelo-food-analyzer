@@ -1,0 +1,1 @@
+1. Rename enums to PascalCase

@@ -18,6 +18,9 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@api-gateway/*": [
+        "apps/api-gateway/src/*"
+      ],
       "@app/cache": [
         "libs/cache/src"
       ],
@@ -48,21 +51,23 @@
       "@app/kafka/*": [
         "libs/kafka/src/*"
       ],
+      "@app/metrics": [
+        "libs/metrics/src"
+      ],
+      "@app/metrics/*": [
+        "libs/metrics/src/*"
+      ],
       "@app/s3": [
         "libs/s3/src"
       ],
       "@app/s3/*": [
         "libs/s3/src/*"
       ],
-
-      "@api-gateway/*": [
-        "apps/api-gateway/src/*"
+      "@product-analyzer/*": [
+        "apps/product-analyzer/src/*"
       ],
       "@scan/*": [
         "apps/scan/src/*"
-      ],
-      "@product-analyzer/*": [
-        "apps/product-analyzer/src/*"
       ],
       "@web/*": [
         "apps/web/src/*"

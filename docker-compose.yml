@@ -1,3 +1,6 @@
+include:
+  - ./monitoring/docker-compose.yml
+
 services:
   api-gateway:
     container_name: api-gateway

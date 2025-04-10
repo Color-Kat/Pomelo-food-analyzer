@@ -3,6 +3,7 @@ import {
 } from "@app/contracts/ingredients-recognition/ingredients-recognition.recognized";
 import {ScanPhotoSubmitted} from "@app/contracts/scan/scan.photo-submitted";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
+import {ScanType} from "@app/interfaces";
 import {PingContract} from "@app/kafka";
 import {Controller, Get, Inject} from '@nestjs/common';
 import {ConfigService} from "@nestjs/config";
@@ -37,6 +38,7 @@ export class AppController {
     @Get("pytest")
     pytest() {
         this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic,{
+            type: ScanType.FOOD,
             scanId: '123',
             photoUrl: 'https://cdn-irec.r-99.com/sites/default/files/imagecache/copyright/user-images/81829/x5R8ArElB9DgNb8Viiw.jpg'
         })

@@ -22,7 +22,10 @@ async function bootstrap() {
     });
 
     // Connect Kafka
-    app.connectMicroservice<MicroserviceOptions>(kafkaConsumers.apiGatewayService);
+    app.connectMicroservice<MicroserviceOptions>(
+        kafkaConsumers.apiGatewayService,
+        { inheritAppConfig: true } // To enable interceptors for microservice
+    );
     // app.enableShutdownHooks(); // For correct disconnect from kafka (significantly slow down reconnect)
 
     await app.startAllMicroservices();

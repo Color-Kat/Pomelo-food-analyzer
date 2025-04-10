@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "microservices"
+    metrics_path: /metrics
+    static_configs:
+      - targets: [
+        "api-gateway:3000",
+        "scan:8080",
+        "product-analyzer:8080",
+        "ingredients-recognition:8080",
+      ]
