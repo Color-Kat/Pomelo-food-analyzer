@@ -2,6 +2,16 @@ import asyncio
 from core.kafka_config import KafkaConfig
 from core.kafka_connection import KafkaConnection
 from ocr.ocr_controller import OCRController
+import signal
+import sys
+
+def graceful_exit(signum, frame):
+    print(f"Received signal {signum}, exiting gracefully.")
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, graceful_exit)
+signal.signal(signal.SIGINT, graceful_exit)
+
 
 class KafkaService:
     def __init__(self, config, controller_class):

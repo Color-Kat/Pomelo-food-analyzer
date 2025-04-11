@@ -16,7 +16,7 @@ services:
     image: grafana/loki:3.4.3
     container_name: loki
     ports:
-      - "9070:9070"
+      - "3100:3100"
     volumes:
       - ./loki-config.yaml:/etc/loki/local-config.yaml
     attach: false
