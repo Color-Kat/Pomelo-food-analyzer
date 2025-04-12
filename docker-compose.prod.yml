@@ -1,6 +1,10 @@
+include:
+  - ./monitoring/docker-compose.yml
+
 services:
   api-gateway:
     container_name: api-gateway
+    restart: always
     build:
       context: .
       dockerfile: ./apps/api-gateway/Dockerfile.prod
@@ -11,12 +15,12 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
-    restart: always
     depends_on:
       - db
       - kafka
 
   web:
+    restart: always
     build:
       context: .
       dockerfile: ./apps/web/Dockerfile.prod
@@ -26,10 +30,10 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
-    restart: always
 
   scan:
     container_name: scan
+    restart: always
     build:
       context: .
       dockerfile: ./apps/scan/Dockerfile.prod
@@ -40,10 +44,27 @@ services:
       - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${SCAN_DB_NAME}?schema=public
     env_file:
       - .env
-    restart: always
     depends_on:
       - db
       - kafka
+
+  product-analyzer:
+    container_name: product-analyzer
+    restart: always
+    build:
+      context: .
+      dockerfile: ./apps/product-analyzer/Dockerfile.prod
+    ports:
+      - ${PRODUCT_ANALYZER_PORT}:${PRODUCT_ANALYZER_PORT}
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${PRODUCT_ANALYZER_DB_NAME}?schema=public
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - kafka
+      - redis
 
   ingredients-recognition:
     container_name: ingredients-recognition
@@ -72,6 +93,15 @@ services:
       - postgres-data:/var/lib/postgresql/data
     restart: always
 
+  redis:
+    container_name: redis
+    image: redis:7.4-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: always
+
   kafka:
     image: apache/kafka-native:4.0.0
     ports:
@@ -92,3 +122,4 @@ services:
 
 volumes:
   postgres-data:
+  redis-data:

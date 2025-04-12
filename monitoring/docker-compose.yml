@@ -10,6 +10,7 @@ services:
       - ./promtail-config.yaml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml
     privileged: true
+    profiles: [monitoring]
     attach: false
 
   loki:
@@ -19,6 +20,7 @@ services:
       - "3100:3100"
     volumes:
       - ./loki-config.yaml:/etc/loki/local-config.yaml
+    profiles: [monitoring]
     attach: false
 
   prometheus:
@@ -29,6 +31,7 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheusdata:/prometheus
+    profiles: [monitoring]
     attach: false
 
   grafana:
@@ -37,9 +40,10 @@ services:
     ports:
       - "9000:9000"
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_LOGIN}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
       - GF_SERVER_HTTP_PORT=9000
+    profiles: [monitoring]
     volumes:
       - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
       - grafanadata:/var/lib/grafana
