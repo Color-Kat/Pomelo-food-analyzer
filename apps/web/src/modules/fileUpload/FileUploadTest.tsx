@@ -51,13 +51,12 @@ export const FileUploadTest: FC = () => {
     };
 
     useEffect(() => {
-        if (!scanId) return;
+        if (!scanId || scanStatus == ScanStatusChanged.StatusEnum.COMPLETED) return;
 
         const es = new EventSource(`http://localhost:3000/scans/${scanId}/status-updates`);
         es.onopen = () => console.log('>>> Connection opened!');
         es.onerror = (e) => {
             console.log('ERROR!', e);
-            // setScanId('');
         };
         es.onmessage = (e: MessageEvent) => {
             const data: ScanStatusChanged.Payload = JSON.parse(e.data);

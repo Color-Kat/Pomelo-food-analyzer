@@ -26,7 +26,9 @@ export class AnalysisController {
     }
 
     @EventPattern(ScanIngredientsChanged.topic)
-    handleIngredientsChanged(data: ScanIngredientsChanged.Payload) {
-        this.analysisService.analyzeIngredients(data);
+    async handleIngredientsChanged(
+        data: ScanIngredientsChanged.Payload,
+    ) {
+        await this.analysisService.analyzeIngredients(data);
     }
 }

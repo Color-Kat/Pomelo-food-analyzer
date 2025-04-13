@@ -1,4 +1,4 @@
-import {ProductAnalyzerAnalyzed} from "@app/contracts/product-analyzer/product-analyzer.analyzed";
+import {ProductAnalyzerAnalyzed} from "@app/contracts";
 import {ScanIngredientsChanged} from "@app/contracts/scan/scan.ingredients-changed";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
 import {ScanType} from "@app/interfaces";
@@ -31,7 +31,6 @@ export class AnalysisService {
     }
 
     async analyzeIngredients(data: ScanIngredientsChanged.Payload) {
-        console.log('analyzing')
         try {
             // Emit the ANALYZING status
             this.emitStatus(data.scanId, ScanStatusChanged.StatusEnum.ANALYZING);
@@ -52,7 +51,12 @@ export class AnalysisService {
             });
         } catch (error) {
             // Handle the error and emit a failure status
-            this.emitStatus(data.scanId, ScanStatusChanged.StatusEnum.ANALYSIS_FAILED);
+            setTimeout(() => {
+                this.emitStatus(data.scanId, ScanStatusChanged.StatusEnum.ANALYSIS_FAILED);
+            }, 50);
+
+            console.warn("Error during analysis:", error, "Retry to analyze");
+            throw new Error(error);
         }
     }
 }
