@@ -18,10 +18,10 @@ model Additive {
   id            Int      @id @default(autoincrement())
   code          String   @unique
   name          String
-  danger        Int      @map("danger")
-  origin        String[]
-  category      String[]
   synonyms      String[]
+  danger        Int      @map("danger")
+  origins       String[]
+  categories    String[]
   description   String
   healthHarm    String   @map("health_harm")
   healthBenefit String   @map("health_benefit")

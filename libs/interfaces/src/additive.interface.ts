@@ -3,8 +3,8 @@ export interface IAdditive {
     code: string;
     name: string | null;
     danger: number;
-    origin: string[] | string | null;
-    category: string[] | string | null;
+    origins: string[] | string | null;
+    categories: string[] | string | null;
     synonyms: string[] | null;
     description: string | null;
     healthHarm: string | null;

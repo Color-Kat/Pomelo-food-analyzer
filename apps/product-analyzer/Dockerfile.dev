@@ -12,4 +12,6 @@ COPY . .
 CMD cd apps/product-analyzer && \
     npx prisma generate && \
     npx prisma migrate deploy && \
+    cd ../.. && \
+    npx prisma db seed && \
     npm run start:dev product-analyzer

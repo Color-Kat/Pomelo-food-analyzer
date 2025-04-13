@@ -4,6 +4,6 @@
     "declaration": false,
     "outDir": "../../dist/apps/product-analyzer"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "assets/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }

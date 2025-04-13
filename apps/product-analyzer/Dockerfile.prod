@@ -3,29 +3,34 @@ FROM node:23-alpine as build
 WORKDIR /app
 
 COPY *.json ./
-
 RUN npm install
 
-COPY . .
+# Generate Prisma client
+WORKDIR /app/apps/product-analyzer/prisma
+COPY ./apps/product-analyzer/prisma .
+RUN npx prisma generate
 
-RUN npm run build product-analyzer # Will create folder in ./dist/apps/scan
+# Build application
+WORKDIR /app
+COPY . .
+RUN npm run build product-analyzer # Will create folder in ./dist/apps/product-analyzer
 
 FROM node:23-alpine
 
 WORKDIR /app
 
 COPY package.json ./
-
 RUN npm install --omit=dev && \
     npm install prisma @prisma/client
 
 # Copy the built application and Prisma schema from the build stage
+COPY --from=build /app/tsconfig.json .
 COPY --from=build /app/dist/apps/product-analyzer ./dist
-COPY --from=build /app/apps/scan/prisma ./prisma
+COPY --from=build /app/apps/product-analyzer/prisma ./apps/product-analyzer/prisma
 
-# Run Prisma generation, migrations, and start the app at runtime
-CMD npx prisma generate && \
+# Run Prisma migrations, seed and start the app at runtime
+CMD cd apps/product-analyzer && \
     npx prisma migrate deploy && \
+    cd ../.. && \
+    npx prisma db seed && \
     node ./dist/main.js
-
-#CMD ["node", "./dist/main.js"]

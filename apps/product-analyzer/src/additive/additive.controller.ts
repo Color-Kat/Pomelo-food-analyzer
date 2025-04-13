@@ -11,25 +11,25 @@ export class AdditiveController {
     ) {
     }
 
-    @Get('cache')
-    async getCache() {
-        console.time('OperationTime');
-        // await this.cacheManager.set("a", "a");
-        const result = await this.cacheManager.get("a");
-        // const result = await this.prismaService.additive.findMany();
-        console.timeEnd('OperationTime');
-        console.log(result)
-        return result;
-
-        return this.cacheManager.wrap(
-            "test",
-            async () => {
-                console.log("This is not cached value")
-                return "test";
-            },
-            {ttl: 10000,}
-        )
-    }
+    // @Get('cache')
+    // async getCache() {
+    //     console.time('OperationTime');
+    //     // await this.cacheManager.set("a", "a");
+    //     const result = await this.cacheManager.get("a");
+    //     // const result = await this.prismaService.additive.findMany();
+    //     console.timeEnd('OperationTime');
+    //     console.log(result)
+    //     return result;
+    //
+    //     return this.cacheManager.wrap(
+    //         "test",
+    //         async () => {
+    //             console.log("This is not cached value")
+    //             return "test";
+    //         },
+    //         {ttl: 10000,}
+    //     )
+    // }
 
     @Get('')
     async getAll() {

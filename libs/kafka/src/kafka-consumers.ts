@@ -26,6 +26,7 @@ const createKafkaMicroserviceOptions = (serviceName: string): MicroserviceOption
             rebalanceTimeout: 1000,
             heartbeatInterval: 500,
             allowAutoTopicCreation: true,
+
             // retry: {
             //     maxRetryTime: 30000,
             // }

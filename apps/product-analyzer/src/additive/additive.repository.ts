@@ -22,11 +22,12 @@ export class AdditiveRepository implements OnModuleInit {
         await this.cacheManager.del("additives");
     }
 
-    public async getAll(): Promise<AdditivesType> {
-        return await this.cacheManager.wrap<Record<string, any>>(
+    public async getAll() {
+        return await this.cacheManager.wrap<AdditivesType>(
             "additives",
             async () => {
                 console.log('not cache');
+
                 // Group the additives by code
                 return (await this.prismaService.additive.findMany()).reduce<AdditivesType>(
                     (acc, additive) => {
@@ -48,24 +49,24 @@ export class AdditiveRepository implements OnModuleInit {
         await this.prismaService.additive.createMany({
             data: [
                 {
-                    name: "E100 - Curcumin",
-                    description: "Curcumin additive is a natural yellow pigment derived from turmeric. It is used as a colorant in food products.",
-                    code: "E100",
-                    danger: 0,
-                    healthHarm: "Hz",
+                    name         : "E100 - Curcumin",
+                    description  : "Curcumin additive is a natural yellow pigment derived from turmeric. It is used as a colorant in food products.",
+                    code         : "E100",
+                    danger       : 0,
+                    healthHarm   : "Hz",
                     healthBenefit: "Hz",
-                    usage: "Food coloring",
-                    referenceUrl: ""
+                    usage        : "Food coloring",
+                    referenceUrl : ""
                 },
                 {
-                    name: "E111 - shit",
-                    description: "Shit additive is a natural brown pigment derived from poop. It is used as a colorant in food products.",
-                    code: "E111",
-                    danger: 5,
-                    healthHarm: "Vomit",
+                    name         : "E111 - shit",
+                    description  : "Shit additive is a natural brown pigment derived from poop. It is used as a colorant in food products.",
+                    code         : "E111",
+                    danger       : 5,
+                    healthHarm   : "Vomit",
                     healthBenefit: "Hz",
-                    usage: "Food coloring",
-                    referenceUrl: ""
+                    usage        : "Food coloring",
+                    referenceUrl : ""
                 },
             ]
         });
