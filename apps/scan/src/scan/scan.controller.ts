@@ -1,4 +1,4 @@
-import {ScanCreate} from "@app/contracts";
+import {ProductAnalyzerAnalyzed, ScanCreate} from "@app/contracts";
 import {
     IngredientsRecognitionRecognized
 } from "@app/contracts/ingredients-recognition/ingredients-recognition.recognized";
@@ -59,8 +59,13 @@ export class ScanController {
     }
 
     @EventPattern(IngredientsRecognitionRecognized.topic)
-    handleIngredientsRecognized(data: IngredientsRecognitionRecognized.Payload) {
-        this.scanService.handleIngredientsRecognized(data);
+    async handleIngredientsRecognized(data: IngredientsRecognitionRecognized.Payload) {
+        await this.scanService.handleIngredientsRecognized(data);
+    }
+
+    @EventPattern(ProductAnalyzerAnalyzed.topic)
+    async handleAnalyzed(data: ProductAnalyzerAnalyzed.Payload) {
+        await this.scanService.handleAnalyzed(data);
     }
 
     // @Patch(':id')

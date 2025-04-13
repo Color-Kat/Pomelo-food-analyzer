@@ -1,6 +1,6 @@
 import {IAnalysis} from "@app/interfaces/analysis.interface";
 
-export namespace ProductAnalyzer {
+export namespace ProductAnalyzerAnalyzed {
     export const topic = "product-analyzer.analyzed.event";
 
     export class Payload {

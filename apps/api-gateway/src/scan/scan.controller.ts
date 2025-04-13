@@ -1,10 +1,10 @@
-import { ScanService } from "@api-gateway/scan/scan.service";
-import { ScanCreate } from "@app/contracts";
-import { ScanStatusChanged } from "@app/contracts/scan/scan.status-changed";
-import { HttpService } from "@nestjs/axios";
-import {Body, Controller, Get, Inject, OnModuleInit, Param, Post, Req, Sse} from '@nestjs/common';
-import { ConfigService } from "@nestjs/config";
-import { ClientKafka, EventPattern } from "@nestjs/microservices";
+import {ScanService} from "@api-gateway/scan/scan.service";
+import {ScanCreate} from "@app/contracts";
+import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
+import {HttpService} from "@nestjs/axios";
+import {Controller, Get, Inject, OnModuleInit, Param, Post, Req, Sse} from '@nestjs/common';
+import {ConfigService} from "@nestjs/config";
+import {ClientKafka, EventPattern} from "@nestjs/microservices";
 import {firstValueFrom} from "rxjs";
 
 @Controller('scans')
@@ -30,7 +30,6 @@ export class ScanController implements OnModuleInit {
 
     @EventPattern(ScanStatusChanged.topic)
     handleOrderStatusChanged(data: ScanStatusChanged.Payload) {
-        console.log("here:", data)
         this.scanService.handleScanStatusChanged(data);
     }
 

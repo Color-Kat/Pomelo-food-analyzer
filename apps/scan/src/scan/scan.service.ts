@@ -1,7 +1,8 @@
-import {ScanCreate} from "@app/contracts";
+import {ProductAnalyzerAnalyzed, ScanCreate} from "@app/contracts";
 import {
     IngredientsRecognitionRecognized
 } from "@app/contracts/ingredients-recognition/ingredients-recognition.recognized";
+import {ScanIngredientsChanged} from "@app/contracts/scan/scan.ingredients-changed";
 import {ScanPhotoSubmitted} from "@app/contracts/scan/scan.photo-submitted";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
 import {ScanStatus} from "@app/interfaces";
@@ -11,7 +12,6 @@ import {ClientKafka} from "@nestjs/microservices";
 import {ScanEntity} from "@scan/scan/scan.entity";
 import {ScanRepository} from "@scan/scan/scan.repository";
 import {firstValueFrom} from "rxjs";
-import {ScanIngredientsChanged} from "@app/contracts/scan/scan.ingredients-changed";
 
 @Injectable()
 export class ScanService {
@@ -106,6 +106,23 @@ export class ScanService {
             scanId: scan.id,
             type: scan.type,
             ingredients: scan.ingredients
+        });
+    }
+
+    async handleAnalyzed(data: ProductAnalyzerAnalyzed.Payload) {
+        const scan = await this.scanRepository.findOne(data.scanId);
+        if (!scan) throw new NotFoundException(`Скан с id=${data.scanId} не найден`);
+
+        const scanEntity = new ScanEntity(scan);
+
+        scanEntity.setStatus(ScanStatus.COMPLETED);
+        // scanEntity.setAnalysisResult(data.ingredients);
+
+        await this.scanRepository.update(scanEntity);
+
+        this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
+            scanId: scan.id,
+            status: ScanStatusChanged.StatusEnum.COMPLETED,
         });
     }
 

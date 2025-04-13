@@ -46,5 +46,5 @@ All microservices are located in the `./apps` directory.
 I use grafana stack for logs and metrics (Grafana, Loki, Promtail, Prometheus).
 To run application with logs and metrics, add corresponding flag:
 ```bash
-docker compose --prodile monitoring up
+docker compose --profile monitoring up
 ```

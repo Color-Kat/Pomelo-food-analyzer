@@ -1,7 +1,7 @@
 import {CACHE_MANAGER} from "@nestjs/cache-manager";
-import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
-import {Cache} from "cache-manager";
+import {Inject, Injectable, NotFoundException} from '@nestjs/common';
 import {AdditiveRepository} from "@product-analyzer/additive/additive.repository";
+import {Cache} from "cache-manager";
 
 @Injectable()
 export class AdditiveService {
@@ -11,11 +11,14 @@ export class AdditiveService {
     ) {
     }
 
-    public getAll() {
+    getAll() {
         return this.additiveRepository.getAll();
     }
 
-    public getByCode(code: string) {
-        return this.additiveRepository.getOneByCode(code);
+    async getByCode(code: string) {
+        const additive = await this.additiveRepository.getOneByCode(code);
+        if (!additive) throw new NotFoundException(`additive not found: ${code}`);
+
+        return additive;
     }
 }

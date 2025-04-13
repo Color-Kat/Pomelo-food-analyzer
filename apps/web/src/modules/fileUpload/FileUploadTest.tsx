@@ -1,7 +1,8 @@
 'use client';
 
-import React, {useState, ChangeEvent, FC, useEffect} from 'react';
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
+import {IScan} from "@app/interfaces";
+import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 
 export const FileUploadTest: FC = () => {
     const [file, setFile] = useState<File | null>(null);
@@ -35,10 +36,9 @@ export const FileUploadTest: FC = () => {
         try {
             const response = await fetch('http://localhost:3000/scans', {
                 method: 'POST',
-                body: formData,
+                body  : formData,
             });
             const result = await response.json();
-
 
             setMessage('Фото успешно отправлено!');
             // setFile(null);
@@ -57,7 +57,7 @@ export const FileUploadTest: FC = () => {
         es.onopen = () => console.log('>>> Connection opened!');
         es.onerror = (e) => {
             console.log('ERROR!', e);
-            setScanId('');
+            // setScanId('');
         };
         es.onmessage = (e: MessageEvent) => {
             const data: ScanStatusChanged.Payload = JSON.parse(e.data);
@@ -68,37 +68,49 @@ export const FileUploadTest: FC = () => {
         return () => es.close();
     }, [scanId]);
 
+    const [scanResult, setScanResult] = useState<IScan>();
+    const getScanResult = async (scanId: string) => {
+        const response = await fetch('http://localhost:3000/scans/' + scanId);
+        const result = await response.json();
+        console.log("Scan Result: ", result);
+        setScanResult(result.scan);
+    }
+    useEffect(() => {
+        if (!scanId || scanStatus != ScanStatusChanged.StatusEnum.COMPLETED) return;
+        getScanResult(scanId)
+    }, [scanId, scanStatus]);
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px'}}>
             <h1>Загрузка фото</h1>
 
             <input
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
-                style={{ margin: '10px 0' }}
+                style={{margin: '10px 0'}}
             />
 
             {preview && (
-                <div style={{ margin: '20px 0' }}>
+                <div style={{margin: '20px 0'}}>
                     <h2>Предпросмотр</h2>
                     <img
                         src={preview}
                         alt="Предпросмотр фото"
-                        style={{ width: '100%', maxWidth: '640px', border: '1px solid black' }}
+                        style={{width: '100%', maxWidth: '640px', border: '1px solid black'}}
                     />
                 </div>
             )}
 
             <button
                 onClick={handleUpload}
-                style={{ padding: '10px 20px' }}
+                style={{padding: '10px 20px'}}
             >
                 Отправить фото
             </button>
 
             {message && (
-                <p style={{ color: message.includes('ошибка') ? 'red' : 'green', marginTop: '10px' }}>
+                <p style={{color: message.includes('ошибка') ? 'red' : 'green', marginTop: '10px'}}>
                     {message}
                 </p>
             )}
@@ -109,6 +121,12 @@ export const FileUploadTest: FC = () => {
                 ? <div>{scanStatus}</div>
                 : <div>Не начато</div>
             }
+
+            {scanResult && <>
+                <h2>Результат сканирования</h2>
+                <div>id: {scanResult.id}</div>
+                <div>ingredients: {scanResult.ingredients.join(', ')}</div>
+            </>}
         </div>
     );
 }

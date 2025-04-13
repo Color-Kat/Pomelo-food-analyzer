@@ -22,7 +22,7 @@ export class AdditiveRepository implements OnModuleInit {
         await this.cacheManager.del("additives");
     }
 
-    public async getAll() {
+    async getAll() {
         return await this.cacheManager.wrap<AdditivesType>(
             "additives",
             async () => {
@@ -39,7 +39,7 @@ export class AdditiveRepository implements OnModuleInit {
         )
     }
 
-    public async getOneByCode(code: string) {
+    async getOneByCode(code: string) {
         // Get one additive by code from CACHE or DB for the first time
         const additives = await this.getAll();
         return additives[code] || null;
