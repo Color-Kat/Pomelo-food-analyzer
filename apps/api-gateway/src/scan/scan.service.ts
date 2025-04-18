@@ -1,4 +1,4 @@
-import {ScanCreate} from "@app/contracts";
+import {ScanCreate, ScanGetScansByUserId} from "@app/contracts";
 import {ScanGetScan} from "@app/contracts/scan/scan.get-scan";
 import {ScanGetScans} from "@app/contracts/scan/scan.get-scans";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
@@ -87,6 +87,18 @@ export class ScanService {
                 ScanGetScan.Response,
                 ScanGetScan.Request
             >(ScanGetScan.getUrl(scanId))
+        );
+
+        return response.data;
+    }
+
+    async getScansByUserId(userId: string) {
+        // Redirect request to scan service
+        const response = await firstValueFrom(
+            this.httpService.get<
+                ScanGetScansByUserId.Response,
+                ScanGetScansByUserId.Request
+            >(ScanGetScansByUserId.getUrl(userId))
         );
 
         return response.data;

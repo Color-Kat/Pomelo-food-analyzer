@@ -26,12 +26,17 @@ export class ScanService {
         return this.scanRepository.getAll();
     }
 
+
     async findOne(id: string) {
         const scan = await this.scanRepository.findOne(id);
         if (!scan)
             throw new NotFoundException(`Скан с id=${id} не найден`);
 
         return scan;
+    }
+
+    findAllByUserId(userId: string) {
+        return this.scanRepository.findAllByUserId(userId);
     }
 
     async create(

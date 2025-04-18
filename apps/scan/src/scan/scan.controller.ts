@@ -1,4 +1,4 @@
-import {ProductAnalyzerAnalyzed, ScanCreate} from "@app/contracts";
+import {ProductAnalyzerAnalyzed, ScanCreate, ScanGetScansByUserId} from "@app/contracts";
 import {
     IngredientsRecognitionRecognized
 } from "@app/contracts/ingredients-recognition/ingredients-recognition.recognized";
@@ -37,6 +37,13 @@ export class ScanController {
         return {
             scan: await this.scanService.findOne(id)
         };
+    }
+
+    @Get('user/:userId')
+    async getScansByUserId(@Param('userId') userId: string): Promise<ScanGetScansByUserId.Response> {
+        return {
+            scans: await this.scanService.findAllByUserId(userId)
+        }
     }
 
     @Post()

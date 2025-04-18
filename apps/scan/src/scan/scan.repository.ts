@@ -20,6 +20,14 @@ export class ScanRepository {
         }) as Promise<IScan>;
     }
 
+    async findAllByUserId(userId: string) {
+        return this.prismaService.scan.findMany({
+            where: {
+                userId: userId
+            }
+        }) as Promise<IScan[]>;
+    }
+
     async create(data: ScanEntity) {
         return this.prismaService.scan.create({
             data

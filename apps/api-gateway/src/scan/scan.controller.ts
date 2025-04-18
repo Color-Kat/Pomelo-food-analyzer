@@ -44,6 +44,11 @@ export class ScanController implements OnModuleInit {
         return this.scanService.getOne(id);
     }
 
+    @Get("/user/:userId")
+    getScansByUserId(@Param('userId') userId: string) {
+        return this.scanService.getScansByUserId(userId);
+    }
+
     // @Post()
     // async create(@Body() body: ScanCreate.Request) {
     //     return this.scanService.create(body);
@@ -52,7 +57,7 @@ export class ScanController implements OnModuleInit {
     @Post()
     async create(@Req() request: Request) {
         const response = await firstValueFrom(
-            this.httpService.post(
+            this.httpService.post<ScanCreate.Response>(
                 ScanCreate.url,
                 request,
                 {
