@@ -1,4 +1,4 @@
-import {ProductAnalyzerAnalyzed, ScanCreate, ScanGetScansByUserId} from "@app/contracts";
+import {ProductAnalyzerAnalyzed, ScanCreate, ScanGetScansByUserId, ScanUpdate} from "@app/contracts";
 import {
     IngredientsRecognitionRecognized
 } from "@app/contracts/ingredients-recognition/ingredients-recognition.recognized";
@@ -11,7 +11,7 @@ import {
     Get,
     MaxFileSizeValidator,
     Param,
-    ParseFilePipe,
+    ParseFilePipe, Patch,
     Post,
     UploadedFile,
     UseInterceptors
@@ -32,10 +32,10 @@ export class ScanController {
         };
     }
 
-    @Get(':id')
-    async findOne(@Param('id') id: string): Promise<ScanGetScan.Response> {
+    @Get(':scanId')
+    async findOne(@Param('scanId') scanId: string): Promise<ScanGetScan.Response> {
         return {
-            scan: await this.scanService.findOne(id)
+            scan: await this.scanService.findOne(scanId)
         };
     }
 
@@ -53,8 +53,8 @@ export class ScanController {
         @UploadedFile(
             new ParseFilePipe({
                 validators: [
-                    new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }),
-                    new FileTypeValidator({ fileType: 'image/*' }),
+                    new MaxFileSizeValidator({maxSize: 10 * 1024 * 1024}),
+                    new FileTypeValidator({fileType: 'image/*'}),
                 ],
             }),
         )
@@ -62,6 +62,16 @@ export class ScanController {
     ): Promise<ScanCreate.Response> {
         return {
             scan: await this.scanService.create(createScanDto, photo)
+        };
+    }
+
+    @Patch(':scanId')
+    async update(
+        @Param('scanId') scanId: string,
+        @Body() updateScanDto: ScanUpdate.Request
+    ): Promise<ScanUpdate.Response> {
+        return {
+            scan: await this.scanService.update(scanId, updateScanDto)
         };
     }
 
@@ -75,10 +85,7 @@ export class ScanController {
         await this.scanService.handleAnalyzed(data);
     }
 
-    // @Patch(':id')
-    // update(@Param('id') id: string, @Body() updateScanDto: UpdateScanDto) {
-    //   return this.scanService.update(+id, updateScanDto);
-    // }
+
     //
     // @Delete(':id')
     // remove(@Param('id') id: string) {

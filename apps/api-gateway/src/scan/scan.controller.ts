@@ -1,8 +1,8 @@
 import {ScanService} from "@api-gateway/scan/scan.service";
-import {ScanCreate} from "@app/contracts";
+import {ScanCreate, ScanUpdate} from "@app/contracts";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
 import {HttpService} from "@nestjs/axios";
-import {Controller, Get, Inject, OnModuleInit, Param, Post, Req, Sse} from '@nestjs/common';
+import {Body, Controller, Get, Inject, OnModuleInit, Param, Patch, Post, Req, Sse} from '@nestjs/common';
 import {ConfigService} from "@nestjs/config";
 import {ClientKafka, EventPattern} from "@nestjs/microservices";
 import {firstValueFrom} from "rxjs";
@@ -55,18 +55,15 @@ export class ScanController implements OnModuleInit {
     // }
 
     @Post()
-    async create(@Req() request: Request) {
-        const response = await firstValueFrom(
-            this.httpService.post<ScanCreate.Response>(
-                ScanCreate.url,
-                request,
-                {
-                    headers: request.headers as any,
-                    responseType: 'json',
-                },
-            )
-        );
+    async create(@Req() request: Request): Promise<ScanCreate.Response> {
+        return this.scanService.create(request);
+    }
 
-        return response.data;
+    @Patch('/:scanId')
+    async update(
+        @Param('scanId') scanId: string,
+        @Body() updateScanDto: ScanUpdate.Request
+    ): Promise<ScanUpdate.Response> {
+        return this.scanService.update(scanId, updateScanDto);
     }
 }

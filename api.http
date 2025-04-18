@@ -12,3 +12,12 @@ Content-Type: application/json
   "type": "food",
   "userId": "admin"
 }
+
+### Update a scan
+PATCH http://localhost:3000/scans/cm9miixvo0000p7c0w3xos5xx
+Content-Type: application/json
+
+{
+  "type": "food",
+  "ingredients": ["E-200", "E-100"]
+}

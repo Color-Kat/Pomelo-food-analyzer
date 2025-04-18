@@ -1,4 +1,4 @@
-import {ScanCreate, ScanGetScansByUserId} from "@app/contracts";
+import {ScanCreate, ScanGetScansByUserId, ScanIngredientsChanged, ScanPhotoSubmitted, ScanUpdate} from "@app/contracts";
 import {ScanGetScan} from "@app/contracts/scan/scan.get-scan";
 import {ScanGetScans} from "@app/contracts/scan/scan.get-scans";
 import {ScanStatusChanged} from "@app/contracts/scan/scan.status-changed";
@@ -6,6 +6,7 @@ import {ScanStatus} from "@app/interfaces";
 import {HttpService} from "@nestjs/axios";
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {finalize, firstValueFrom, Subject} from "rxjs";
+import {ScanEntity} from "@scan/scan/scan.entity";
 
 // type ScanStatusChangedEvent =
 
@@ -104,12 +105,31 @@ export class ScanService {
         return response.data;
     }
 
-    async create(scan: ScanCreate.Request) {
+    async create(request: Request) {
+        // Redirect request (with image form data)
+        const response = await firstValueFrom(
+            this.httpService.post<ScanCreate.Response>(
+                ScanCreate.url,
+                request,
+                {
+                    headers: request.headers as any,
+                    responseType: 'json',
+                },
+            )
+        );
+
+        return response.data;
+    }
+
+    async update(scanId: string, updateScanDto: ScanUpdate.Request) {
         // Redirect request to scan service
         const response = await firstValueFrom(
-            this.httpService.post<ScanCreate.Response, ScanCreate.Request>(
-                ScanCreate.url,
-                scan
+            this.httpService.patch<
+                ScanUpdate.Response,
+                ScanUpdate.Request
+            >(
+                ScanUpdate.getUrl(scanId),
+                updateScanDto
             )
         );
 

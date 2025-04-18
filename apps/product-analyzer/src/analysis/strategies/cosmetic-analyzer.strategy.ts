@@ -7,7 +7,7 @@ import {IAnalyzerStrategy} from "@product-analyzer/analysis/strategies/analyzer-
 export class CosmeticAnalyzerStrategy implements IAnalyzerStrategy {
     async analyze(data: ScanIngredientsChanged.Payload): Promise<IAnalysis> {
         // Logic for FOOD
-        console.log(data, 'Process food');
+        console.log(data, 'Process cosmetic');
 
         // Simulate some analysis logic
         return {

@@ -1,4 +1,4 @@
-import {ProductAnalyzerAnalyzed, ScanCreate} from "@app/contracts";
+import {ProductAnalyzerAnalyzed, ScanCreate, ScanUpdate} from "@app/contracts";
 import {
     IngredientsRecognitionRecognized
 } from "@app/contracts/ingredients-recognition/ingredients-recognition.recognized";
@@ -26,11 +26,10 @@ export class ScanService {
         return this.scanRepository.getAll();
     }
 
-
-    async findOne(id: string) {
-        const scan = await this.scanRepository.findOne(id);
+    async findOne(scanId: string) {
+        const scan = await this.scanRepository.findOne(scanId);
         if (!scan)
-            throw new NotFoundException(`Скан с id=${id} не найден`);
+            throw new NotFoundException(`Скан с id=${scanId} не найден`);
 
         return scan;
     }
@@ -48,8 +47,8 @@ export class ScanService {
         );
 
         // Upload file to S3 and set photo URL
-        const {url: photoUrl, filePath} = await this.s3Service.uploadFile(photo, "scans/");
-        await scanEntity.setPhoto(photoUrl);
+        // const {url: photoUrl, filePath} = await this.s3Service.uploadFile(photo, "scans/");
+        // await scanEntity.setPhoto(photoUrl);
 
         // Save scan to db
         const result = await this.scanRepository.create(scanEntity);
@@ -131,10 +130,60 @@ export class ScanService {
         });
     }
 
-    // update(id: number, updateScanDto: UpdateScanDto) {
-    //   return `This action updates a #${id} scan`;
-    // }
-    //
+    async update(scanId: string, updateScanDto: ScanUpdate.Request) {
+        const scan = await this.scanRepository.findOne(scanId);
+        if (!scan) throw new NotFoundException(`Скан с id=${scanId} не найден`);
+
+        const scanEntity = new ScanEntity(scan)
+            .setName(updateScanDto.name)
+            .setType(updateScanDto.type)
+            .setIngredients(updateScanDto.ingredients)
+        ;
+
+        // If ingredients changed,
+        // then reanalyze them
+        if(updateScanDto.ingredients) {
+            scanEntity.setStatus(ScanStatus.RECOGNIZED);
+
+            // Change status
+            await firstValueFrom(this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
+                scanId: scanEntity.id,
+                status: ScanStatusChanged.StatusEnum.ANALYSIS_PENDING,
+            }));
+
+            // Send data to product-analyzer microservice
+            await firstValueFrom(this.kafkaService.emit<void, ScanIngredientsChanged.Payload>(ScanIngredientsChanged.topic, {
+                scanId  : scanEntity.id,
+                type    : scanEntity.type,
+                ingredients: scanEntity.ingredients
+            }));
+        }
+
+        // If type is updated, but ingredients is not,
+        // then we must rerun text recognition on image based on new scan.type
+        if(updateScanDto.type && !updateScanDto.ingredients) {
+            scanEntity.setStatus(ScanStatus.CREATED);
+
+            // Change status
+            await firstValueFrom(this.kafkaService.emit<void, ScanStatusChanged.Payload>(ScanStatusChanged.topic, {
+                scanId: scanEntity.id,
+                status: ScanStatusChanged.StatusEnum.RECOGNITION_PENDING,
+            }));
+
+            // Send data to OCR microservice
+            await firstValueFrom(this.kafkaService.emit<void, ScanPhotoSubmitted.Payload>(ScanPhotoSubmitted.topic, {
+                scanId  : scanEntity.id,
+                type    : scanEntity.type,
+                photoUrl: scanEntity.photoUrl,
+            }));
+        }
+
+        // Update record in database
+        const updatedScan = await this.scanRepository.update(scanEntity);
+
+        return updatedScan;
+    }
+
     // remove(id: number) {
     //   return `This action removes a #${id} scan`;
     // }

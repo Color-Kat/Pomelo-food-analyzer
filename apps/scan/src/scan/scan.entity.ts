@@ -25,16 +25,33 @@ export class ScanEntity implements IScan {
         this.updatedAt = scan.updatedAt || undefined;
     }
 
-    public setStatus(status: ScanStatus) {
+    public setStatus(status?: ScanStatus) {
+        if(!status) return this;
         this.status = status;
         return this;
     }
 
-    public setPhoto(url: string) {
-        this.photoUrl = url;
+    public setType(type?: ScanType) {
+        if(!type) return this;
+        this.type = type;
+        return this;
     }
 
-    public setIngredients(ingredients: string[]) {
+    public setPhoto(url?: string) {
+        if(!url) return this;
+        this.photoUrl = url;
+        return this;
+    }
+
+    public setName(name?: string) {
+        if(!name) return this;
+        this.name = name;
+        return this;
+    }
+
+    public setIngredients(ingredients?: string[]) {
+        if(!ingredients) return this;
         this.ingredients = ingredients;
+        return this;
     }
 }
